@@ -10,5 +10,4 @@ public class SiteInforVO {
 	private String url;
 	private String user;
 	private String password;
-	
 }

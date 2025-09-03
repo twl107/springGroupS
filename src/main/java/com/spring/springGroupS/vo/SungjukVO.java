@@ -12,6 +12,4 @@ public class SungjukVO {
 	private int tot;
 	private double avg;
 	private String grade;
-	
-	
 }

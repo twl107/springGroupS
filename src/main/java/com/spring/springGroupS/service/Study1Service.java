@@ -35,7 +35,6 @@ public class Study1Service {
 		log.info("getAopServiceTest3 메소드(while문)1~100 : "+tot+"\n");
 	}
 	
-	
 	public void getAopServiceTest52() {
 		log.info("getAopServiceTest52 메소드입니다.\n");
 		
@@ -44,6 +43,7 @@ public class Study1Service {
 			tot += i;
 		}
 		log.info("getAopServiceTest52 메소드(for문)1~100 : "+tot+"\n");
+		//return tot;
 	}
 	
 	public void getAopServiceTest53() {

@@ -333,12 +333,12 @@ public class Study1Controller {
 //		
 //		SungjukVO vo3 = context.getBean("vo3", SungjukVO.class);
 //		System.out.println("vo3 : " + vo3);
-
+		
 		List<SungjukVO> vos = new ArrayList<SungjukVO>();
 		SungjukVO vo = null;
 		for(int i=1; i<=3; i++) {
 			String str = "vo" + i;
-			vo = context.getBean(str,SungjukVO.class);
+			vo = context.getBean(str, SungjukVO.class);
 			vos.add(vo);
 		}
 		

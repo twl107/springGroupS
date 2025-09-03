@@ -9,5 +9,4 @@ public class SiteInfor2VO {
 	private String url;
 	private String user;
 	private String password;
-	
 }
