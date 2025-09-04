@@ -1,20 +1,15 @@
 package com.spring.springGroupS.aop;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 @EnableAspectJAutoProxy
-@Aspect
+//@Aspect
 @Component
 public class AspectTest {
-
+	/*
 	// 문제1 : getAopServiceTest1()메소드 '전/후'에 메세지를 출력하시오.
 	@Around("execution(* com.spring.springGroupS.service.Study1Service.getAopServiceTest1(..))")
 	public void aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -38,7 +33,7 @@ public class AspectTest {
 		System.out.println("   핵심코드에서 반환된 값 : " + result.toString() + "\n");
 	}
 	
-	// 문제4 : getAopServiceTest2()메소드, getAopServiceTest3()메소드, 모든 메소드가 수행하는데 걸리는 시간?
+	// 문제4 : getAopServiceTest2()메소드와 getAopServiceTest3()메소드가 각각 수행하는데 걸리는 시간?
 	long startTime, endTime;
 	@Pointcut("execution(* com.spring.springGroupS.service.Study1Service.getAopServiceTest5*(..))")
 	private void cut() {}
@@ -56,6 +51,24 @@ public class AspectTest {
 		long res = endTime - startTime;
 		System.out.println("수행시간 : " + res);
 	}
+	*/
 	
-  // 문제4 : Study1Service객체안의 모든 메소드의 수행시간을 해당 메소드 이름과 함께 출력하시오.
+  // 문제5 : Study1Service객체안의 모든 메소드의 수행시간을 해당 메소드 이름과 함께 출력하시오.
+	int cnt = 0;
+	@Around("execution(* com.spring.springGroupS.service.Study1Service.*(..))")
+	//@Around("execution(* com.spring.springGroupS.service..*.*(..))")
+	public Object aroundAdvice5(ProceedingJoinPoint joinPoint) throws Throwable {
+		cnt++;
+		System.out.println(cnt + "번째 : 이곳은 aroundAdvice5메소드 입니다.");
+		long startTime = System.nanoTime();
+		try {
+		  Object result = joinPoint.proceed();
+		  return result;
+		} finally {
+			long endTime = System.nanoTime();
+			long executionTime = endTime - startTime;
+			System.out.println(cnt + "번 메소드 수행시간 : " + executionTime + "ns\n");
+			System.out.println(cnt + "번끝 : ******************************************************\n");
+		}
+	}
 }

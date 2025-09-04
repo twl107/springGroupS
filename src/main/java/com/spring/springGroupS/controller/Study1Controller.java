@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.springGroupS.service.Study1Service;
+import com.spring.springGroupS.vo.BmiVO;
 import com.spring.springGroupS.vo.HoewonVO;
 import com.spring.springGroupS.vo.SiteInfor2VO;
 import com.spring.springGroupS.vo.SiteInforVO;
@@ -315,6 +316,19 @@ public class Study1Controller {
 		return "study1/aop/aopMenu";
 	}
 	
+	@GetMapping("/aop/test5")
+	public String aopTest5Get() {
+		// log.info("study1컨트롤러의 test5메소드입니다.");
+		
+		study1Service.getAopServiceTest1();
+		study1Service.getAopServiceTest2();
+		study1Service.getAopServiceTest3();
+		study1Service.getAopServiceTest52();
+		study1Service.getAopServiceTest53();
+		
+		return "study1/aop/aopMenu";
+	}
+	
 	// XML 값 주입연습 메뉴
 	@GetMapping("/xml/xmlMenu")
 	public String xmlMenuGet() {
@@ -348,6 +362,26 @@ public class Study1Controller {
 		return "study1/xml/xmlTest1";
 	}
 	
+	@GetMapping("/xml/xmlTest2")
+	public String xmlTest2Get(Model model) {
+		AbstractApplicationContext context = new GenericXmlApplicationContext("xml/sungjuk.xml");
+		
+		List<SungjukVO> vos = new ArrayList<SungjukVO>();
+		SungjukVO vo = null;
+		for(int i=1; i<=3; i++) {
+			String str = "vo" + i;
+			vo = context.getBean(str, SungjukVO.class);
+			//vo = study1Service.getSungjukCalc(vo);
+			study1Service.getSungjukCalc(vo);
+			vos.add(vo);
+		}
+		
+		model.addAttribute("vos", vos);
+		
+		context.close();
+		return "study1/xml/xmlTest2";
+	}
+	
 	@GetMapping("/xml/xmlTest3")
 	public String xmlTest3Get(Model model) {
 		AbstractApplicationContext context = new GenericXmlApplicationContext("xml/siteInfor.xml");
@@ -370,6 +404,28 @@ public class Study1Controller {
 		
 		context.close();
 		return "study1/xml/xmlTest3";
+	}
+	
+	@GetMapping("/xml/xmlTest5")
+	public String xmlTest5Get(Model model) {
+		AbstractApplicationContext context = new GenericXmlApplicationContext("xml/bmi.xml");
+		
+		List<BmiVO> vos = new ArrayList<BmiVO>();
+		
+		BmiVO vo = null;
+		for(int i=1; i<=50; i++) {
+			String str = "person" + i;
+			vo = context.getBean(str, BmiVO.class);
+			if(vo.getName().equals("")) break;
+			// vo = study1Service.getBmiCalc(vo);
+			study1Service.getBmiCalc(vo);
+			vos.add(vo);
+		}
+		
+		model.addAttribute("vos", vos);
+		
+		context.close();
+		return "study1/xml/xmlTest5";
 	}
 	
 	

@@ -21,7 +21,7 @@
     <property name="name" value="이기자" />
     <property name="kor" value="80" />
     <property name="eng" value="70" />
-    <property name="mat" value="60" />
+    <property name="mat" value="67" />
   </bean>
 
 

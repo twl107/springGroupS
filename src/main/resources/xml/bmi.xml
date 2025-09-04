@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="bmi" class="com.spring.springGroupS.vo.BmiVO">
+	  <property name="low" value="18.5" />
+	  <property name="normal" value="23" />
+	  <property name="high" value="25" />
+	</bean>
+
+	<bean id="person1" class="com.spring.springGroupS.vo.BmiVO">  
+		<property name="name" value="홍길동" />
+		<property name="height" value="168" />
+		<property name="weight" value="64" />
+	</bean>
+
+	<bean id="person2" class="com.spring.springGroupS.vo.BmiVO">  
+		<property name="name" value="김말숙" />
+		<property name="height" value="163" />
+		<property name="weight" value="49" />
+	</bean>
+
+	<bean id="person3" class="com.spring.springGroupS.vo.BmiVO">  
+		<property name="name" value="이기자" />
+		<property name="height" value="172" />
+		<property name="weight" value="95" />
+	</bean>
+	
+	<bean id="person4" class="com.spring.springGroupS.vo.BmiVO">  
+		<property name="name" value="오하늘" />
+		<property name="height" value="152" />
+		<property name="weight" value="55" />
+	</bean>
+	
+	<bean id="person5" class="com.spring.springGroupS.vo.BmiVO">  
+		<property name="name" value="" />
+		<property name="height" value="0" />
+		<property name="weight" value="0" />
+	</bean>
+</beans>
