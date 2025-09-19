@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springGroupS.dao.AdminDAO">
+
+	<select id="getComplaintList" resultType="com.spring.springGroupS.vo.ComplaintVO">
+	  select c.idx, c.part as part, c.partIdx, b.title as title, b.nickName as nickName, c.cpMid as cpMid, c.cpContent as cpContent, date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate, c.progress, b.mid as mid, b.content as content from complaint c left join board2 b on c.partIdx=b.idx <if test="part != ''"> where progress = #{part} </if> order by c.idx desc;
+	</select>
+	
+	<select id="getComplaintTotRecCnt" resultType="int">
+	  select count(*) from complaint <if test="part != ''"> where progress = #{part} </if>
+	</select>
+	
+	<select id="getComplaintSearch" resultType="com.spring.springGroupS.vo.ComplaintVO">  <!-- 신고해제후 또 신고하게되면 같은자료가 2개일상올수 있기에 limit 1 로 처리한다. -->
+	  select c.idx, c.part as part, b.title as title, b.nickName as nickName, c.cpMid as cpMid, c.cpContent as cpContent, date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate, c.progress, b.mid as mid, b.content as content from complaint c left join board2 b on c.partIdx=b.idx where c.partIdx=#{partIdx} limit 1;
+	</select>
+	
+	
+	
+	
+	
+	
+	<insert id="setBoardComplaintInput">
+	  insert into complaint values (default,#{vo.part},#{vo.partIdx},#{vo.cpMid},#{vo.cpContent},default,default);
+	</insert>
+	
+	
+	
+	
+	<update id="setMemberLevelChange">
+	  update member set level = #{level} where idx = #{idx};
+	</update>
+	
+	<update id="setBoardTableComplaintOk">
+	  update board2 set complaint = 'OK' where idx = #{partIdx};
+	</update>
+	
+	<update id="setComplaintProcess">
+	  update board2 set complaint = #{flag} where idx = #{partIdx};
+	</update>
+		
+	<update id="setComplaintProcessOk">
+	  update complaint set progress = #{complaintSw} where idx = #{idx};
+	</update>
+	
+	<update id="setComplaintDelete">
+	  update ${part} set complaint = 'DE' where idx = #{partIdx};
+	</update>
+	
+
+</mapper>

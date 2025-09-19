@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springGroupS.dao.StudyDAO">
+
+	<select id="getUserList" resultType="com.spring.springGroupS.vo.UserVO">
+		select * from user where mid = #{mid};
+	</select>
+
+	<select id="getUserMidSearch" resultType="com.spring.springGroupS.vo.UserVO">
+		select * from user where mid = #{mid} limit 1;
+	</select>
+
+	<select id="getUserListSearch" resultType="com.spring.springGroupS.vo.UserVO">
+		select * from user where mid like concat('%',#{mid},'%');
+	</select>
+	
+	<select id="getMemberList" resultType="com.spring.springGroupS.vo.MemberVO">
+		select * from member order by mid;
+	</select>
+
+</mapper>

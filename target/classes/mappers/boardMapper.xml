@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springGroupS.dao.BoardDAO">
+
+	<select id="getBoardList" resultType="com.spring.springGroupS.vo.BoardVO">
+		SELECT *,
+		  timestampdiff(hour, wDate, now()) as hour_diff,
+		  datediff(now(), wDate) as date_diff,
+		  (select count(*) from board2Reply where board2Idx=b.idx) as replyCnt
+		  FROM board2 b where complaint != 'DE'
+		  <if test="search != null and search != ''"> and ${search} like concat("%",#{searchString},"%")</if>
+		  ORDER BY idx DESC limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<select id="getTotRecCnt" resultType="int">
+	  select count(*) from board2  where complaint != 'DE' <if test="search != ''"> and ${search} like concat("%",#{searchString},"%")</if>;
+	</select>
+	
+	<select id="getBoardContent" resultType="com.spring.springGroupS.vo.BoardVO">
+		select * from board2 where idx = #{idx};
+	</select>
+	
+	<!--  <![CDATA[조건식....]]>   -->
+	<select id="getPreNextSearch" resultType="com.spring.springGroupS.vo.BoardVO">
+	  <if test="str == 'preVO'">
+		  select idx,title from board2 where complaint != 'DE' and <![CDATA[idx < #{idx}]]>  order by idx desc limit 1;
+		</if>
+	  <if test="str != 'preVO'">
+		  select idx,title from board2 where complaint != 'DE' and <![CDATA[idx > #{idx}]]> order by idx limit 1;
+		</if>
+	</select>
+	
+	<select id="getBoardReply" resultType="com.spring.springGroupS.vo.Board2ReplyVO">
+	  select * from board2Reply where board2Idx = #{idx} order by re_order;
+	</select>
+	
+	<select id="getBoardParentReplyCheck" resultType="com.spring.springGroupS.vo.Board2ReplyVO">
+	  select * from board2Reply where board2Idx = #{board2Idx} order by re_order desc limit 1;
+	</select>
+	
+	
+	
+	
+	<insert id="setBoardInput">
+	  insert into board2 values (default,#{vo.mid},#{vo.nickName},#{vo.title},#{vo.content},#{vo.hostIp},#{vo.openSw},default,default,default,default);
+	</insert>
+	
+	<insert id="setBoardReplyInput">
+	  insert into board2Reply values (default,#{replyVO.board2Idx},#{replyVO.ref},#{replyVO.re_step},#{replyVO.re_order},#{replyVO.mid},#{replyVO.nickName},default,#{replyVO.hostIp},#{replyVO.content});
+	</insert>
+
+	
+	
+	
+	
+	
+	
+	
+	<update id="setReadNumPlus">
+	  update board2 set readNum = readNum + 1 where idx = #{idx};
+	</update>
+	
+	<update id="setGoodReadNumPlus">
+	  update board2 set good = good + 1 where idx = #{idx};
+	</update>
+	
+	<update id="setBoardUpdate">
+	  update board2 set title=#{vo.title},content=#{vo.content},hostIp=#{vo.hostIp},openSw=#{vo.openSw},wDate=now() where idx=#{vo.idx};
+	</update>
+	
+	<update id="setReplyOrderUpdate">
+	  update board2Reply set re_order = re_order + 1 where board2Idx=#{board2Idx} and re_order > #{re_order};
+	</update>
+	
+	<update id="setBoardReplyUpdateOk">
+	  update board2Reply set content = #{vo.content} where idx=#{vo.idx};
+	</update>
+	
+	
+	
+	
+	<delete id="setBoardDelete">
+	  delete from board2 where idx = #{idx};
+	</delete>
+	
+	<delete id="setBoardReplyDelete">
+	  delete from board2Reply where idx = #{idx};
+	</delete>
+	
+
+</mapper>
