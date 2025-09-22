@@ -11,39 +11,46 @@
   <script>
     'use strict';
     
-    let cnt = 1;
-    
-    function pwdCheck1() {
-    	$("#pwdDemo").hide();
-    	$("#pwd").var("");
-    }
-    
-    function pwdCheck2() {
-    	$("#pwdDemo").show();
-    }
-    
-    // 파일 박스 추가하기
-    function fileBoxAppend() {
-    	cnt++;
-    	let fileBox = '';
-    	fileBox += '<div id="fBox'+cnt+'" class="input-group">';
-    	fileBox += '<input type="file" name="fName'+cnt+'" id="fName'+cnt+'" class="form-control mb-1 me-1"/>';
-    	fileBox += '<input type="button" value="삭제" onclick="deleteBox('+cnt+')" class="btn btn-danger mb-1"/>';
-    	fileBox += '</div>';
-    	$("#fileBox").append(fileBox);		// html(), text(), append()
-    }
-    
-    // 파일 박스 삭제
-    function deleteBox(cnt) {
-    	$("#fBox"+cnt).remove();
-    	cnt--;
-    }
-    
     // 폼체크, 파일사이즈체크, 확장자체크
     function fCheck() {
+    	let fName = document.getElementById("fName").value;
+    	let title = $("#title").val();
+    	let ext = "";
+    	let fileSize = 0;
+    	let maxSize = 1024 * 1024 * 30;	// 최대 30MByte
     	
+    	//if(fName.trim() == "") {
+    	//	alert("업로드할 파일을 선택하세요");
+    	//	return false;
+    	//}
     	
-    	myform.submit();
+    	let fileLength = document.getElementById("fName").files.length;
+    	if(fileLength < 1) {
+       	alert("업로드할 파일을 선택하세요");
+       	return false;
+    	}
+    	else if(title.trim() == "") {
+    		alert("제목을 선택하세요");
+    		$("#title").focus()
+       	return false;
+    	}
+    	
+    	for(let i=0; i<fileLength; i++) {
+    		fName = document.getElementById("fName").files[i].name;
+    		ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+    		if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip' && ext != 'hwp' && ext != 'doc' && ext != 'ppt' && ext != 'pptx' && ext != 'pdf' && ext != 'txt') {
+       		alert("업로드 가능한 파일은 'jpg/gif/png/zip/hwp/doc/ppt/pptx/pdf/txt'파일 입니다.");
+       	}
+    		fileSize += document.getElementById("fName").files[i].size;
+    	}
+    	
+    	if(fileSize > maxSize) {
+    		alert("업로드할 파일의 최대 총용량은 30MByte 이하로 등록하세요");
+    	}
+    	else {
+    		myform.fSize.value = fileSize;
+    		myform.submit();
+    	}
     }
   </script>
 </head>
@@ -54,12 +61,13 @@
 <div class="container">
   <h2 class="text-center">자 료 올 리 기</h2>
   <br/>
-  <form name="myform" method="post" action="PdsInputOk.pds" class="was-validated" enctype="multipart/form-data">
+  <form name="myform" method="post" class="was-validated" enctype="multipart/form-data">
 		<div>
-      <input type="button" value="파일박스추가" onclick="fileBoxAppend()" class="btn btn-primary mb-1" />
-    	<input type="file" name="fName1" id="fName1" class="form-control mb-1" />
+      <!-- <input type="button" value="파일박스추가" onclick="fileBoxAppend()" class="btn btn-primary mb-1" /> -->
+    	<!-- input태그의 file속성에서 사용하는 name의 변수명은 VO에 있는 필드명과 같아서는 안된다.(400에러발생) -->
+    	<input type="file" name="file" id="fName" multiple class="form-control mb-1" />
     </div>
-    <div id="fileBox"></div>
+    <!-- <div id="fileBox"></div> -->
     <div class="mt-3 mb-3">
       올린이 : ${sNickName}
     </div>
@@ -80,14 +88,13 @@
     </div>
     <div class="mb-3">
       공개여부 :
-      <input type="radio" name="openSw" value="공개" onclick="pwdCheck1()" checked/>공개 &nbsp; &nbsp;
-      <input type="radio" name="openSw" value="비공개" onclick="pwdCheck2()"/>비공개
-      <span id="pwdDemo" style="display:none">비밀번호 : <input type="password" name="pwd" id="pwd" value="1234" /></span>
+      <input type="radio" name="openSw" value="공개" checked/>공개 &nbsp; &nbsp;
+      <input type="radio" name="openSw" value="비공개"/>비공개
     </div>
     <div class="row text-center">
       <div class="col"><input type="button" value="자료올리기" onclick="fCheck()" class="btn btn-success"/></div>
       <div class="col"><input type="reset" value="다시쓰기" class="btn btn-warning"/></div>
-      <div class="col"><input type="button" value="돌아가기" onclick="location.href='PdsList.pds?part=${part}';" class="btn btn-info"/></div>
+      <div class="col"><input type="button" value="돌아가기" onclick="location.href='pdsList?part=${part}';" class="btn btn-info"/></div>
     </div>
     <input type="hidden" name="hostIp" value="${pageContext.request.remoteAddr}" />
     <input type="hidden" name="mid" value="${sMid}" />

@@ -19,5 +19,6 @@ create table pds2 (
   foreign key(mid) references member(mid)
 );
 
-desc pds2;
+desc pds;
+
 

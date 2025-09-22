@@ -44,6 +44,7 @@ public class Pagination {
 			totRecCnt = adminService.getComplaintTotRecCnt(part);
 		}
 		else if(pageVO.getSection().equals("pds")) {
+			//if(part.equals("")) part = "전체";
 			totRecCnt = pdsService.getTotRecCnt(part);
 		}
 		

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -8,6 +9,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css">
   <title>pdsList.jsp</title>
   <script>
     'use strict';
@@ -16,18 +18,18 @@
     	let part = $("#part").val();
       location.href = "pdsList?part="+part+"&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}";
     }
-    
-    // 모달 출력
-    function fCheck1(title) {
-    	$("#modal-title").text(title);
+    	
+    // 다운로드 수 증가하기
+    function downNumCheck(idx) {
+    	$.ajax({
+    		url  : '${ctp}/pds/pdsDownNumCheck',
+    		type : 'post',
+    		data : {idx : idx},
+    		success: () => location.reload(),
+    		error : () => alert('전송오류')
+    	});
     }
-    
-    function fCheck2(title,nickName,fDate,part) {
-    	$("#myModal2 .modal-title").text(title);
-    	$("#modal-part").text(part);
-    	$("#modal-nickName").text(nickName);
-    	$("#modal-fDate").text(fDate);
-    }
+
   </script>
 </head>
 <body>
@@ -35,14 +37,15 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <h2 class="text-center">자 료 실 리 스 트(${pageVO.part})</h2>
+	<c:set var="part" value="${pageVO.part == '' ? '전체' : pageVO.part}" />
+  <h2 class="text-center">자 료 실 리 스 트(${part})</h2>
   <br/>
   <table class="table table-borderless m-0 p-0">
     <tr>
       <td>
         <form name="partForm">
           <select name="part" id="part" onchange="partCheck()">
-            <option ${pageVO.part=="전체" ? "selected" : ""}>전체</option>
+            <option value="" ${pageVO.part=="" ? "selected" : ""}>전체</option>
             <option ${pageVO.part=="학습" ? "selected" : ""}>학습</option>
             <option ${pageVO.part=="여행" ? "selected" : ""}>여행</option>
             <option ${pageVO.part=="음식" ? "selected" : ""}>음식</option>
@@ -71,9 +74,7 @@
       <tr>
         <td>${fn:length(vos) - st.index}</td>
         <td>
-          <a href="#" onclick="fCheck2('${vo.title}','${vo.nickName}','${vo.FDate}','${vo.part}')" data-bs-toggle="modal" data-bs-target="#myModal2">${vo.title}</a>
-          <%-- <a href="#" onclick="fCheck1('${vo.title}')" data-bs-toggle="modal" data-bs-target="#myModal1">${vo.title}</a> --%>
-          <%-- <a href="PdsContent.pds?idx=${vo.idx}&part=${part}&pag=${pag}&pageSize=${pageSize}">${vo.title}</a> --%>
+          <a href="pdsContent?idx=${vo.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}&part=${pageVO.part}">${vo.title}</a>
           <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
         </td>
         <td>${vo.nickName}</td>
@@ -82,63 +83,20 @@
         </td>
         <td>${vo.part}</td>
         <td>
-        	${vo.FName}(${vo.FSize})
+	       	<c:set var="fNames" value="${fn:split(vo.FName,'/')}" />
+	        <c:set var="fSNames" value="${fn:split(vo.FSName,'/')}" />
+	        <c:forEach var="fName" items="${fNames}" varStatus="st">
+	          <a href="${ctp}/pds/${fSNames[st.index]}" download="${fName}" onclick="downNumCheck(${vo.idx})">${fName}</a><br/>
+	        </c:forEach>
+        (<fmt:formatNumber value="${vo.FSize/1024}" pattern="#,##0"/> KByte)
         </td>
         <td>${vo.downNum}</td>
-        <td><!-- 파일 올린이와 관리자만 삭제처리가능 -->
-          <a href="javascript:pdsDeleteCheck()" class="badge bg-danger">삭제</a><br/>
-          <a href="#" class="badge bg-primary">전체파일다운</a>
+        <td>
+          <a href="pdsTotalDown?idx=${vo.idx}" class="badge bg-primary text-decoration-none">전체파일다운</a>
         </td>
       </tr>
     </c:forEach>
   </table>
-</div>
-
-<!-- The Modal1 -->
-<div class="modal fade" id="myModal1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-title"></h4>
-        <div>(소제목)</div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <h5>이곳은 본문입니다.</h5>
-        <div>정보1 : ___</div>
-        <div><input type="text" name="msg" value="반갑습니다." class="form-control"/></div>
-      </div>
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- The Modal2 -->
-<div class="modal fade" id="myModal2">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title"></h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div>분류 : <span id="modal-part"></span></div>
-        <div>올린이 : <span id="modal-nickName"></span></div>
-        <div>올린날짜 : <span id="modal-fDate"></span></div>
-      </div>
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- 블록페이지 시작 -->
