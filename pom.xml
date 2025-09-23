@@ -241,7 +241,13 @@
 	    <artifactId>commons-fileupload</artifactId>
 	    <version>1.5</version>
 		</dependency>
-
+		
+		<!-- random 영문자/숫자 - 캡차 -->
+		<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-lang3</artifactId>
+	    <version>3.12.0</version>
+		</dependency>
 
 		
 		      

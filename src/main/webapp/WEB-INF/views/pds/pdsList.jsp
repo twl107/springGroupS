@@ -18,8 +18,8 @@
     	let part = $("#part").val();
       location.href = "pdsList?part="+part+"&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}";
     }
-    	
-    // 다운로드 수 증가하기
+    
+    // 다운로드수 증가하기
     function downNumCheck(idx) {
     	$.ajax({
     		url  : '${ctp}/pds/pdsDownNumCheck',
@@ -29,7 +29,6 @@
     		error : () => alert('전송오류')
     	});
     }
-
   </script>
 </head>
 <body>
@@ -37,20 +36,24 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-	<c:set var="part" value="${pageVO.part == '' ? '전체' : pageVO.part}" />
+  <c:set var="part" value="${pageVO.part == '' ? '전체' : pageVO.part}" />
   <h2 class="text-center">자 료 실 리 스 트(${part})</h2>
   <br/>
   <table class="table table-borderless m-0 p-0">
     <tr>
       <td>
         <form name="partForm">
-          <select name="part" id="part" onchange="partCheck()">
-            <option value="" ${pageVO.part=="" ? "selected" : ""}>전체</option>
-            <option ${pageVO.part=="학습" ? "selected" : ""}>학습</option>
-            <option ${pageVO.part=="여행" ? "selected" : ""}>여행</option>
-            <option ${pageVO.part=="음식" ? "selected" : ""}>음식</option>
-            <option ${pageVO.part=="기타" ? "selected" : ""}>기타</option>
-          </select>
+          <div class="d-flex justify-content-start">
+            <div>
+		          <select name="part" id="part" onchange="partCheck()" class="form-select">
+		            <option value="" ${pageVO.part=="" ? "selected" : ""}>전체</option>
+		            <option ${pageVO.part=="학습" ? "selected" : ""}>학습</option>
+		            <option ${pageVO.part=="여행" ? "selected" : ""}>여행</option>
+		            <option ${pageVO.part=="음식" ? "selected" : ""}>음식</option>
+		            <option ${pageVO.part=="기타" ? "selected" : ""}>기타</option>
+		          </select>
+	          </div>
+          </div>
         </form>
       </td>
       <td class="text-end">
@@ -79,16 +82,16 @@
         </td>
         <td>${vo.nickName}</td>
         <td>
-          ${vo.FDate}
+          ${fn:substring(vo.FDate,0,10)}
         </td>
         <td>${vo.part}</td>
         <td>
-	       	<c:set var="fNames" value="${fn:split(vo.FName,'/')}" />
+          <c:set var="fNames" value="${fn:split(vo.FName,'/')}" />
 	        <c:set var="fSNames" value="${fn:split(vo.FSName,'/')}" />
 	        <c:forEach var="fName" items="${fNames}" varStatus="st">
 	          <a href="${ctp}/pds/${fSNames[st.index]}" download="${fName}" onclick="downNumCheck(${vo.idx})">${fName}</a><br/>
 	        </c:forEach>
-        (<fmt:formatNumber value="${vo.FSize/1024}" pattern="#,##0"/> KByte)
+	        (<fmt:formatNumber value="${vo.FSize/1024}" pattern="#,##0" />KByte)
         </td>
         <td>${vo.downNum}</td>
         <td>

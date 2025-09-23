@@ -51,6 +51,14 @@
 		        <a href="${ctp}/study1/sweetAlert/sweetAlertForm" class="w3-bar-item w3-button">SweetAlert연습</a>
 		      </div>
 		    </div>
+		    <div class="w3-dropdown-hover w3-hide-small">
+		      <button class="w3-padding-large w3-button" title="More">Study2 <i class="fa fa-caret-down"></i></button>     
+		      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+		        <a href="${ctp}/study2/random/randomForm" class="w3-bar-item w3-button">Random 연습</a>
+		        <a href="${ctp}/study2/calendar/calendar" class="w3-bar-item w3-button">인터넷 달력</a>
+		        <a href="${ctp}/study2" class="w3-bar-item w3-button">공공데이터(RestAPI)</a>
+		      </div>
+		    </div>
 	    </c:if>
 	    <div class="w3-dropdown-hover w3-hide-small">
 	      <button onclick="location.href='${ctp}/member/memberMain'" class="w3-padding-large w3-button" title="More">MyPage <i class="fa fa-caret-down"></i></button>     

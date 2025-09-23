@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.springGroupS.common.ProjectProvide;
 import com.spring.springGroupS.dao.PdsDAO;
 import com.spring.springGroupS.vo.PdsVO;
+import com.spring.springGroupS.vo.ReviewVO;
 
 @Service
 public class PdsServiceImpl implements PdsService {
@@ -92,6 +93,11 @@ public class PdsServiceImpl implements PdsService {
 		
 		// 2. DB에 저장된 자료 삭제
 		return pdsDAO.setPdsDeleteCheck(idx);
+	}
+
+	@Override
+	public List<ReviewVO> getReviewList(int idx, String part) {
+		return pdsDAO.getReviewList(idx, part);
 	}
 	
 }

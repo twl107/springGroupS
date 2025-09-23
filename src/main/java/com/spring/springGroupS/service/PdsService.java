@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.springGroupS.vo.PdsVO;
+import com.spring.springGroupS.vo.ReviewVO;
 
 public interface PdsService {
 
@@ -21,5 +22,7 @@ public interface PdsService {
 	void setPdsDownNumCheck(int idx);
 
 	int setPdsDeleteCheck(int idx, String fSName, HttpServletRequest request);
+
+	List<ReviewVO> getReviewList(int idx, String part);
 
 }
