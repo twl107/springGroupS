@@ -16,12 +16,12 @@
 		
 	<select id="getReviewList" resultType="com.spring.springGroupS.vo.ReviewVO">
 	  <!-- select * from review where part=#{part} and partIdx=#{idx}; -->
-	  
-		<!-- select * from review v, reviewReply r 
+	  <!-- 
+	  select * from review v, reviewReply r 
   		where part=#{part} and v.partIdx=#{idx} and v.idx=r.reviewIdx;
   	-->
   	select * from (select * from review where partIdx=#{idx}) v left join reviewReply r 
-			on part=#{part} and v.partIdx=#{idx} and v.idx=r.reviewIdx;
+  		on part=#{part} and v.partIdx=#{idx} and v.idx=r.reviewIdx;
 	</select>	
 	
 	

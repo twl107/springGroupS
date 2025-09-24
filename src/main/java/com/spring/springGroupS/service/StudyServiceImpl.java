@@ -213,7 +213,7 @@ public class StudyServiceImpl implements StudyService {
 			
 			System.out.println("원본파일목록 : " + oFileNames);
 			System.out.println("저장파일목록 : " + sFileNames);
-			System.out.println("총 파일 크기 : " + fileSize);
+			System.out.println("총 파일크기 : " + fileSize);
 			
 			res = 1;
 		} catch (IOException e) {

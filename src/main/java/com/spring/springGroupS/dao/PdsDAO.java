@@ -23,5 +23,4 @@ public interface PdsDAO {
 
 	List<ReviewVO> getReviewList(@Param("idx") int idx, @Param("part") String part);
 
-
 }

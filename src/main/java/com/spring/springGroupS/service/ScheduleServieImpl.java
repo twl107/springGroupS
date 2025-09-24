@@ -4,23 +4,24 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.spring.springGroupS.dao.Study2DAO;
-import com.spring.springGroupS.vo.TransactionVO;
+import com.spring.springGroupS.dao.ScheduleDAO;
+import com.spring.springGroupS.vo.ScheduleVO;
 
 @Service
-public class Study2ServiceImpl implements Study2Service {
+public class ScheduleServieImpl implements ScheduleService {
 
 	@Autowired
-	Study2DAO study2DAO;
+	ScheduleDAO scheduleDAO;
 
 	@Override
-	public void getCalendar() {
+	public void getScheduleList() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		
 		// 오늘날짜 저장변수설정
@@ -72,6 +73,20 @@ public class Study2ServiceImpl implements Study2Service {
 		
 		// ================================
 		
+		// 개별 일정을 DB에서 가져와 담아주기
+		HttpSession session = request.getSession();
+		String mid = (String) session.getAttribute("sMid");
+		
+		String ym = "";
+		int intMM = mm + 1;
+		if(intMM >= 1 && intMM <= 9) ym = yy + "-0" + intMM;
+		else ym = yy + "-" + intMM;
+		
+		List<ScheduleVO> vos = scheduleDAO.getScheduleList(mid, ym);
+		request.setAttribute("vos", vos);
+		
+		// ================================
+		
 		request.setAttribute("toYear", toYear);
 		request.setAttribute("toMonth", toMonth);
 		request.setAttribute("toDay", toDay);
@@ -91,43 +106,23 @@ public class Study2ServiceImpl implements Study2Service {
 	}
 
 	@Override
-	public List<TransactionVO> getUserList() {
-		return study2DAO.getUserList();
+	public List<ScheduleVO> getScheduleMenu(String mid, String ymd) {
+		return scheduleDAO.getScheduleMenu(mid, ymd);
 	}
 
 	@Override
-	public int setValidatorFormOk(TransactionVO vo) {
-		return study2DAO.setValidatorFormOk(vo);
+	public int setScheduleInputOk(ScheduleVO vo) {
+		return scheduleDAO.setScheduleInputOk(vo);
 	}
 
 	@Override
-	public int setValidatorDeleteOk(int idx) {
-		return study2DAO.setValidatorDeleteOk(idx);
+	public int setScheduleUpdateOk(ScheduleVO vo) {
+		return scheduleDAO.setScheduleUpdateOk(vo);
 	}
 
 	@Override
-	public List<TransactionVO> getTransactionList() {
-		return study2DAO.getTransactionList();
+	public int setScheduleDeleteOk(int idx) {
+		return scheduleDAO.setScheduleDeleteOk(idx);
 	}
 
-	@Override
-	public List<TransactionVO> getTransactionList2() {
-		return study2DAO.getTransactionList2();
-	}
-
-	@Override
-	public void setTransactionUser1Input(TransactionVO vo) {
-		study2DAO.setTransactionUser1Input(vo);
-	}
-
-	@Override
-	public void setTransactionUser2Input(TransactionVO vo) {
-		study2DAO.setTransactionUser2Input(vo);
-	}
-
-	@Override
-	public void setTransactionUserTotalInput(TransactionVO vo) {
-		study2DAO.setTransactionUserTotalInput(vo);
-	}
-	
 }

@@ -43,5 +43,4 @@ public class ReviewController {
 	public int reviewReplyDeletePost(int replyIdx) {
 		return reviewService.setReviewReplyDelete(replyIdx);
 	}
-	
 }

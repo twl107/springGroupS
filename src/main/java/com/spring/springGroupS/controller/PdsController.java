@@ -82,8 +82,7 @@ public class PdsController {
 		}
 		double reviewAvg = 0.0;
 		if(reviewVos.size() != 0) reviewAvg = (double) reviewTot / reviewVos.size();
-		model.addAttribute("reviewAvg", reviewAvg);		
-		
+		model.addAttribute("reviewAvg", reviewAvg);
 		
 		return "pds/pdsContent";
 	}

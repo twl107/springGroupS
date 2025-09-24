@@ -56,6 +56,8 @@
 		      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 		        <a href="${ctp}/study2/random/randomForm" class="w3-bar-item w3-button">Random 연습</a>
 		        <a href="${ctp}/study2/calendar/calendar" class="w3-bar-item w3-button">인터넷 달력</a>
+		        <a href="${ctp}/study2/validator/validatorForm" class="w3-bar-item w3-button">validator(유효성검사)</a>
+		        <a href="${ctp}/study2/transaction/transactionForm" class="w3-bar-item w3-button">트랜잭션 연습</a>
 		        <a href="${ctp}/study2" class="w3-bar-item w3-button">공공데이터(RestAPI)</a>
 		      </div>
 		    </div>
@@ -64,7 +66,7 @@
 	      <button onclick="location.href='${ctp}/member/memberMain'" class="w3-padding-large w3-button" title="More">MyPage <i class="fa fa-caret-down"></i></button>     
 	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 	      	<c:if test="${sLevel < 3}">
-		        <a href="${ctp}/study1/mapping/menu" class="w3-bar-item w3-button">일정관리</a>
+		        <a href="${ctp}/schedule/schedule" class="w3-bar-item w3-button">일정관리</a>
 		        <a href="${ctp}/study1/aop/aopMenu" class="w3-bar-item w3-button">웹메세지</a>
 		        <a href="${ctp}/study1/xml/xmlMenu" class="w3-bar-item w3-button">Photo Gallery</a>
 		        <a href="${ctp}/member/memberList" class="w3-bar-item w3-button">회원리스트</a>

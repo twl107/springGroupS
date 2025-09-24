@@ -8,6 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
   <title>calendar.jsp</title>
+  <style>
+    td.today {
+      background-color: pink;
+      color: #fff;
+      font-weight: bolder;
+    }
+  </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
@@ -46,8 +53,13 @@
          
          <!-- 달력출력 -->
         <c:forEach var="i" begin="${1}" end="${lastDay}" varStatus="st">
-          <td>
-            ${st.count}
+          <c:set var="todaySw" value="${yy==toYear && mm==toMonth && st.count==toDay ? 1 : 0}"/>
+          <td ${todaySw == 1 ? 'class=today' : ''}>
+            <c:choose>
+              <c:when test="${cnt % 7 == 1}"><font color="red">${st.count}</font></c:when>
+              <c:when test="${cnt % 7 == 0}"><font color="blue">${st.count}</font></c:when>
+              <c:otherwise>${st.count}</c:otherwise>
+            </c:choose>
           </td>
           <c:if test="${cnt % 7 == 0}">
             </tr><tr>

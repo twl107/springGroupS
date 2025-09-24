@@ -20,8 +20,5 @@ public class ReviewVO {
   private String replyMid;
   private String replyNickName;
   private String replyRDate;
-  private String replyContent;
-	
-	
-	
+  private String replyContent; 
 }

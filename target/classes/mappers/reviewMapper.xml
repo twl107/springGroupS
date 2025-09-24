@@ -17,11 +17,9 @@
 	<delete id="setReviewDelete">
 		delete from review where idx = #{idx};
 	</delete>
-
+	
 	<delete id="setReviewReplyDelete">
 		delete from reviewReply where replyIdx = #{replyIdx};
 	</delete>
-
-
 
 </mapper>

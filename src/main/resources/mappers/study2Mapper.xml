@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springGroupS.dao.Study2DAO">
+
+	<select id="getUserList" resultType="com.spring.springGroupS.vo.TransactionVO">
+		select * from user;
+	</select>
+	
+	<select id="getTransactionList" resultType="com.spring.springGroupS.vo.TransactionVO">
+		select * from user;
+	</select>
+
+	<select id="getTransactionList2" resultType="com.spring.springGroupS.vo.TransactionVO">
+		select * from user2;
+	</select>
+
+
+
+  <insert id="setValidatorFormOk">
+    insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
+  </insert>
+  
+  <insert id="setTransactionUser1Input">
+    insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
+  </insert>
+  
+  <insert id="setTransactionUser2Input">
+    insert into user2 values (#{vo.mid}, #{vo.job});
+  </insert>
+  
+  <insert id="setTransactionUserTotalInput">
+    insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
+    insert into user2 values (#{vo.mid}, #{vo.job});
+  </insert>
+  
+  
+  
+  
+  
+  
+  
+  <delete id="setValidatorDeleteOk">
+    delete from user where idx = #{idx};
+  </delete>
+  
+  
+</mapper>

@@ -82,7 +82,7 @@ public class PdsServiceImpl implements PdsService {
 
 	@Override
 	public int setPdsDeleteCheck(int idx, String fSName, HttpServletRequest request) {
-		// 1. 서버 파일시스템에 저장된 파일 삭제처리
+		// 1. 서버파일시스템에 저장된 파일 삭제처리
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/pds/");
 		//System.out.println("fSName : " + fSName);
 		String[] fSNames = fSName.split("/");
