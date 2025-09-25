@@ -13,17 +13,34 @@
 	<select id="getTransactionList2" resultType="com.spring.springGroupS.vo.TransactionVO">
 		select * from user2;
 	</select>
+	
+	<select id="setDbListCrimeCheck" resultType="com.spring.springGroupS.vo.CrimeVO">
+		select * from crime where year = #{year} order by police;
+	</select>
+	
+	<select id="getDataApiPoliceForm" resultType="com.spring.springGroupS.vo.CrimeVO">
+		select * from crime where year = #{year} and police like concat(#{policeZone},'%') order by police;
+	</select>
+	
+	<select id="getCrimeAnalyze" resultType="com.spring.springGroupS.vo.CrimeVO">
+		select year,
+	  sum(robbery) as totRobbery,sum(murder) as totMurder,sum(theft) as totTheft,sum(violence) as totViolence,
+	  avg(robbery) as avgRobbery,avg(murder) as avgMurder,avg(theft) as avgTheft,avg(violence) as avgViolence
+	  from crime 
+	  where year=#{year} and police like concat(#{policeZone},'%')
+	  order by year, police;
+	</select>
 
 
 
   <insert id="setValidatorFormOk">
     insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
   </insert>
-  
+
   <insert id="setTransactionUser1Input">
     insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
   </insert>
-  
+
   <insert id="setTransactionUser2Input">
     insert into user2 values (#{vo.mid}, #{vo.job});
   </insert>
@@ -33,14 +50,17 @@
     insert into user2 values (#{vo.mid}, #{vo.job});
   </insert>
   
-  
-  
-  
-  
+  <insert id="setSaveCrimeCheck">
+  	insert into crime values (default,#{vo.year},#{vo.police},#{vo.robbery},#{vo.theft},#{vo.murder},#{vo.violence});
+  </insert>
   
   
   <delete id="setValidatorDeleteOk">
     delete from user where idx = #{idx};
+  </delete>
+  
+  <delete id="setDeleteCrimeCheck">
+    delete from crime where year = #{year};
   </delete>
   
   

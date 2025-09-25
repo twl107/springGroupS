@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.springGroupS.dao.ReviewDAO">
 
+	<select id="getReviewCheck" resultType="com.spring.springGroupS.vo.ReviewVO">
+		select * from review where part=#{vo.part} and partIdx=#{vo.partIdx} and mid=#{vo.mid};
+	</select>
 	
 	
 	<insert id="setReviewInputOk">
@@ -11,6 +14,12 @@
 	<insert id="setReviewReplyInputOk">
 		insert into reviewReply values (default,#{vo.reviewIdx},#{vo.replyMid},#{vo.replyNickName},#{vo.replyContent},default);
 	</insert>
+	
+	
+	
+	<update id="setMemberPointPlus">
+	  update member set point = point + #{point} where mid = #{mid};
+	</update>
 	
 	
 	

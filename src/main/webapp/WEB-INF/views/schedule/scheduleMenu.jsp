@@ -10,6 +10,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <jsp:include page="/WEB-INF/views/include/bs5.jsp" />
+  <link rel="stylesheet" type="text/css" href="${ctp}/css/linkOrange.css"/>
   <title>scheduleMenu.jsp</title>
   <script>
     'use strict';
@@ -132,6 +133,12 @@
     		}
     	});
     }
+    
+    // 스케줄 상세내역을 모달로 출력하기
+    function modalView(part, content) {
+   		$(".modal-body #part").html(part);
+   		$(".modal-body #content").html(content);
+    }
   </script>
 </head>
 <body>
@@ -150,7 +157,7 @@
     <c:if test="${ymd >= nowDate}">
     	<a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModalInput">일정등록</a>
     </c:if>
-    <a href="schedule" class="btn btn-primary">돌아가기</a>
+    <a href="schedule?yy=${fn:split(ymd,'-')[0]}&mm=${fn:split(ymd,'-')[1]-1}" class="btn btn-primary">돌아가기</a>
   </div>
   <hr class="border border-dark">
   
@@ -236,7 +243,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title"><b>${ymd}</b></h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <table class="table">
@@ -246,9 +253,8 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
       </div>
-      
     </div>
   </div>
 </div>

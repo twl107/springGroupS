@@ -3,6 +3,7 @@ package com.spring.springGroupS.service;
 import java.util.List;
 
 import com.spring.springGroupS.vo.ComplaintVO;
+import com.spring.springGroupS.vo.ScheduleVO;
 
 public interface AdminService {
 
@@ -25,5 +26,9 @@ public interface AdminService {
 	int setComplaintProcessOk(int idx, String complaintSw);
 
 	int getComplaintTotRecCnt(String part);
+
+	List<ScheduleVO> getScheduleMainList();
+
+	int setAdScheduleInput(ScheduleVO vo);
 
 }

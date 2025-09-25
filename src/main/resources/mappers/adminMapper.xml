@@ -14,6 +14,10 @@
 	  select c.idx, c.part as part, b.title as title, b.nickName as nickName, c.cpMid as cpMid, c.cpContent as cpContent, date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate, c.progress, b.mid as mid, b.content as content from complaint c left join board2 b on c.partIdx=b.idx where c.partIdx=#{partIdx} limit 1;
 	</select>
 	
+	<select id="getScheduleMainList" resultType="com.spring.springGroupS.vo.ScheduleVO">
+		select * from schedule where part = '공지' order by sDate;
+	</select>
+	
 	
 	
 	
@@ -21,6 +25,10 @@
 	
 	<insert id="setBoardComplaintInput">
 	  insert into complaint values (default,#{vo.part},#{vo.partIdx},#{vo.cpMid},#{vo.cpContent},default,default);
+	</insert>
+	
+	<insert id="setAdScheduleInput">
+		insert into schedule values (default,#{vo.mid},#{vo.sDate},#{vo.part},#{vo.content});
 	</insert>
 	
 	

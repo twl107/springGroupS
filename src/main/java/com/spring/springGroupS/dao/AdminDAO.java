@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.springGroupS.vo.ComplaintVO;
+import com.spring.springGroupS.vo.ScheduleVO;
 
 public interface AdminDAO {
 
@@ -25,5 +26,9 @@ public interface AdminDAO {
 	int setComplaintProcessOk(@Param("idx") int idx, @Param("complaintSw") String complaintSw);
 
 	int getComplaintTotRecCnt(@Param("part") String part);
+
+	List<ScheduleVO> getScheduleMainList();
+
+	int setAdScheduleInput(@Param("vo") ScheduleVO vo);
 
 }

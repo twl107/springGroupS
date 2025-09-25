@@ -4,9 +4,10 @@
 
 	<select id="getScheduleList" resultType="com.spring.springGroupS.vo.ScheduleVO">
 	  <!-- select * from schedule where mid=#{mid} and substring(sDate, 1, 7)=#{ym} order by sDate; -->
-	  select idx,mid,sDate,part,content, count(part) as partCnt from schedule 
-	    where mid=#{mid} and substring(sDate, 1, 7)=#{ym} 
-	    group by sDate,part order by sDate;
+	  <!-- select idx,mid,sDate,part,content, count(part) as partCnt from schedule where mid=#{mid} and substring(sDate, 1, 7)=#{ym} group by sDate,part order by sDate; -->
+	  select mid,sDate,part,content,count(part) as partCnt 
+	    from schedule where (part='공지' or mid = #{mid}) and (date_format(sDate, '%Y-%m') = #{ym}) 
+	    group by sDate,part order by sDate, part;
 	</select>
 	
 	<select id="getScheduleMenu" resultType="com.spring.springGroupS.vo.ScheduleVO">

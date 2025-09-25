@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.springGroupS.dao.AdminDAO;
 import com.spring.springGroupS.vo.ComplaintVO;
+import com.spring.springGroupS.vo.ScheduleVO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -69,6 +70,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int getComplaintTotRecCnt(String part) {
 		return adminDAO.getComplaintTotRecCnt(part);
+	}
+
+	@Override
+	public List<ScheduleVO> getScheduleMainList() {
+		return adminDAO.getScheduleMainList();
+	}
+
+	@Override
+	public int setAdScheduleInput(ScheduleVO vo) {
+		return adminDAO.setAdScheduleInput(vo);
 	}
 	
 }

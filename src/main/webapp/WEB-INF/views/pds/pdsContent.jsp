@@ -184,6 +184,19 @@
     	});
     }
     
+	$(window).scroll(function(){
+		if($(this).scrollTop() > 100) {
+			$("#topBtn").addClass("on");
+		}
+		else {
+			$("#topBtn").removeClass("on");
+		}
+		
+		$("#topBtn").click(function(){
+			window.scrollTo({top:0, behavior: "smooth"});
+		});
+	});
+    
   </script>
   <style>
     th {
@@ -220,6 +233,19 @@
     /* 라이오버튼을 선택하면(checked), 해당 별과 그 앞의 별들을 노랑색으로 유지시킴 */
     #starForm input[type=radio]:checked ~ label {
       text-shadow: 0 0 0 rgba(250, 200, 0, 0.98);
+    }
+    
+    /* 화살표 부드럽게 위로 이동하는 CSS(2개) */
+    h6 {
+      position: fixed;
+      right: 1rem;
+      bottom: -50px;
+      transition: 0.7s ease;
+    }
+    .on {
+      opacity: 0.8;
+      cursor: pointer;
+      bottom: 0;
     }
   </style>
 </head>
@@ -406,5 +432,6 @@
 
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
+<h6 id="topBtn" class="text-end me-3"><img src="${ctp}/images/arrowTop.gif" title="위로이동"/></h6>
 </body>
 </html>

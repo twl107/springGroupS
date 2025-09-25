@@ -28,6 +28,7 @@ public class ScheduleController {
 		return "schedule/schedule";
 	}
 	
+	// 보고자 하는 일정 가져오기(날짜형식을 맞춰서 DB에서 비교할수 있게한다.)
 	@GetMapping("/scheduleMenu")
 	public String scheduleMenuGet(Model model, HttpSession session, String ymd) {
 		String mid = (String) session.getAttribute("sMid");

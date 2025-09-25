@@ -16,6 +16,7 @@ import com.spring.springGroupS.service.MemberService;
 import com.spring.springGroupS.vo.ComplaintVO;
 import com.spring.springGroupS.vo.MemberVO;
 import com.spring.springGroupS.vo.PageVO;
+import com.spring.springGroupS.vo.ScheduleVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -126,4 +127,21 @@ public class AdminController {
 		
 		return res;
 	}
+	
+	// 스케줄 공지내역 등록폼보기
+	@GetMapping("/schedule/adScheduleList")
+	public String adScheduleListGet(Model model) {
+		List<ScheduleVO> scheduleVos = adminService.getScheduleMainList();
+		model.addAttribute("scheduleVos", scheduleVos);
+		return "admin/schedule/adScheduleList";
+	}
+	
+	// 스케줄 공지 행사내역 등록하기
+	@ResponseBody
+	@PostMapping("/schedule/adScheduleInput")
+	public int adScheduleInputPost(ScheduleVO vo) {
+		return adminService.setAdScheduleInput(vo);
+	}
+	
+	
 }

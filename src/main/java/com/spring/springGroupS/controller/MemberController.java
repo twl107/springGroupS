@@ -1,6 +1,8 @@
 package com.spring.springGroupS.controller;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.springGroupS.common.ProjectProvide;
 import com.spring.springGroupS.service.GuestService;
 import com.spring.springGroupS.service.MemberService;
+import com.spring.springGroupS.service.ScheduleService;
 import com.spring.springGroupS.vo.MemberVO;
+import com.spring.springGroupS.vo.ScheduleVO;
 
 @Controller
 @RequestMapping("/member")
@@ -42,6 +46,9 @@ public class MemberController {
 	
 	@Autowired
 	GuestService guestService;
+	
+	@Autowired
+	ScheduleService scheduleService;
 	
 	// 로그인 폼
 	@GetMapping("/memberLogin")
@@ -240,6 +247,14 @@ public class MemberController {
 		int guestCnt = guestService.getMemberSearch(mid, mVo.getNickName(), mVo.getName());
 		model.addAttribute("guestCnt", guestCnt);
 		model.addAttribute("mVo", mVo);
+		
+		// 오늘 일정을 체크해서 일정내용을 가져오게 한다.
+		Date now = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String date = sdf.format(now);
+    List<ScheduleVO> scheduleVos = scheduleService.getScheduleMenu(mid, date);
+    model.addAttribute("scheduleVos", scheduleVos);
+    model.addAttribute("scheduleCnt", scheduleVos.size());
 		
 		return "member/memberMain";
 	}

@@ -33,13 +33,13 @@
     &nbsp; <font size="5">${yy}년 ${mm+1}월</font> &nbsp;
     <button type="button" onclick="location.href='schedule?yy=${yy}&mm=${mm+1}'" title="다음월" class="btn btn-secondary btn-sm">▶</button>
     <button type="button" onclick="location.href='schedule?yy=${yy+1}&mm=${mm}'" title="다음년도" class="btn btn-secondary btn-sm">▶</button>
-    <button type="button" onclick="location.href='schedule'" title="오늘날짜" class="btn btn-secondary btn-sm">♥</button>
+    <button type="button" onclick="location.href='schedule'" title="오늘날짜" class="btn btn-secondary btn-sm"><i class="fa-solid fa-house"></i></button>
   </div>
   <div style="height:450px">
     <!-- <table class="table table-bordered text-center align-middle" style="height:100%"> -->
     <table class="table table-bordered text-start" style="height:100%">
-      <tr>
-        <th style="color:red;width:13%">일</th>
+      <tr class="text-center table-secondary" style="height:40px;">
+        <th style="color:red;width:13%;vertical-align:middle">일</th>
         <th style="width:13%;vertical-align:middle">월</th>
         <th style="width:13%;vertical-align:middle">화</th>
         <th style="width:13%;vertical-align:middle">수</th>
@@ -51,7 +51,7 @@
         <!-- 달력 1줄(7일)을 체크하기위한 변수 : cnt -->
         <c:set var="cnt" value="1" />
         <c:forEach var="preDay" begin="${preLastDay - (startWeek-2)}" end="${preLastDay}" varStatus="st">
-          <td style="font-size:0.7em" class="text-start align-top">
+          <td style="font-size:0.65em;color:#aaa" class="text-start align-top">
             ${prevYear}-${prevMonth+1}-${preDay}
           </td>
           <c:set var="cnt" value="${cnt + 1}" />
@@ -82,10 +82,11 @@
           <c:set var="cnt" value="${cnt + 1}"/>
         </c:forEach>
          --%>
-        
+         
+        <%-- 
         <c:forEach var="i" begin="${1}" end="${lastDay}" varStatus="st">
           <c:set var="todaySw" value="${yy==toYear && mm==toMonth && st.count==toDay ? 1 : 0}"/>
-          <td ${todaySw == 1 ? 'class=today' : ''} style="height:80px" id="td${cnt}">
+          <td ${todaySw == 1 ? 'class=today' : ''} style="height:75px;font-size:0.8em" id="td${cnt}">
             <c:set var="ymd" value="${yy}-${mm+1}-${st.count}" />
             <a href="scheduleMenu?ymd=${ymd}">
 	            ${st.count}<br/>
@@ -100,11 +101,34 @@
             </tr><tr>
           </c:if>
           <c:set var="cnt" value="${cnt + 1}"/>
+        </c:forEach>
+         --%>
+          
+        <c:forEach var="i" begin="${1}" end="${lastDay}" varStatus="st">
+          <c:set var="todaySw" value="${yy==toYear && mm==toMonth && st.count==toDay ? 1 : 0}"/>
+          <td ${todaySw == 1 ? 'class=today' : ''} style="height:75px;font-size:0.8em" id="td${cnt}">
+            <c:set var="ymd" value="${yy}-${mm+1}-${st.count}" />
+            <a href="scheduleMenu?ymd=${ymd}">
+	            ${st.count}<br/>
+	            <c:forEach var="vo" items="${vos}">
+	              <c:if test="${fn:substring(vo.SDate,8,10)==st.count}">
+	                <c:if test="${vo.part == '공지'}"><font color="orange">${vo.content}</font><br/></c:if>
+                  <c:if test="${vo.part != '공지'}">
+	              	  - ${vo.part}(${vo.partCnt})<br/>
+	                </c:if>
+	              </c:if>
+	            </c:forEach>
+            </a>
+        	</td>
+        	<c:if test="${cnt % 7 == 0}">
+            </tr><tr>
+          </c:if>
+          <c:set var="cnt" value="${cnt + 1}"/>
         </c:forEach>  
         
         <c:if test="${nextStartWeek != 1}">
 	       	<c:forEach begin="${nextStartWeek}" end="7" varStatus="st">
-	          <td style="font-size:0.7em" class="text-end align-bottom">
+	          <td style="font-size:0.65em;color:#aaa" class="text-end align-bottom">
 	            ${nextYear}-${nextMonth+1}-${st.count}
 	          </td>
 	          <c:set var="cnt" value="${cnt + 1}" />
