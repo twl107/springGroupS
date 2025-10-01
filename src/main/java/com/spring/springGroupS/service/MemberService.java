@@ -36,4 +36,8 @@ public interface MemberService {
 
 	List<MemberVO> getMemberLevelCount(int level);
 
+	MemberVO getMemberNickNameEmailCheck(String nickName, String email);
+
+	void setKakaoMemberInput(String mid, String pwd, String nickName, String email);
+
 }

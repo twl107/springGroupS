@@ -1,5 +1,7 @@
 package com.spring.springGroupS.controller;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -67,7 +69,7 @@ public class MemberController {
 		return "member/memberLogin";
 	}
 	
-  // 로그인 처리하기
+  // 일반 로그인 처리하기
 	@PostMapping("/memberLogin")
 	public String memberLoginPost(HttpSession session,
 			HttpServletRequest request, HttpServletResponse response,
@@ -152,13 +154,132 @@ public class MemberController {
 		}
 	}
 	
-	// 로그아웃 처리
+	// 카카오로그인 처리하기(Get매핑처리)
+	@GetMapping("/kakaoLogin")
+	public String kakaoLoginPost(String nickName, String email,
+			String accessToken,
+			HttpSession session,
+			HttpServletRequest request, 
+			HttpServletResponse response
+		) throws MessagingException {
+		
+		session.setAttribute("sAccessToken", accessToken);
+		//System.out.println("accessToken : " + accessToken);
+		session.setAttribute("sLogin", "kakao");
+		
+		MemberVO vo = memberService.getMemberNickNameEmailCheck(nickName, email);
+		
+		String newMember = "NO";	// 신규회원인지에 대한 정의(신규회원:OK, 기존회원:NO)
+		
+		// 우리 사이트에 첫방문고객이라면, 강제로 회원 가입처리한다.
+		if(vo == null) {
+			String mid = email.substring(0, email.indexOf("@"));
+			
+			MemberVO vo2 = memberService.getMemberIdCheck(mid);
+			if(vo2 != null) return "redirect:/message/midSameSearch";
+			
+			// 비밀번호(임시비밀번호 발급처리)
+			UUID uid = UUID.randomUUID();
+			String pwd = uid.toString().substring(0,8);
+			session.setAttribute("sImsiPwd", pwd);
+			
+			// 새로 발급된 비밀번호를 암호화 시켜서 db에 저장처리한다.(카카오 로그인한 신입회원은 바로 정회원으로 등업 시켜준다.)
+			memberService.setKakaoMemberInput(mid, passwordEncoder.encode(pwd), nickName, email);
+			
+			// 새로 발급받은 임시비밀번호를 메일로 전송한다.
+			projectProvide.mailSend(email, "임시 비밀번호를 발급하였습니다.", pwd);
+			
+			// 새로 가입처리된 회원의 정보를 다시 vo에 담아준다.
+			vo = memberService.getMemberIdCheck(mid);
+			
+			// 비밀번호를 새로 발급처리했을때 sLogin세션을 발생시켜주고, memberMain창에 비밀번호 변경메세지를 지속적으로 뿌려준다.
+			session.setAttribute("sLoginNew", "OK");
+			
+			newMember = "OK";
+		}
+		
+		String mid = vo.getMid();
+		
+		// 1.세션처리
+		String strLevel = "";
+		if(vo.getLevel() == 0) strLevel = "관리자";
+		else if(vo.getLevel() == 1) strLevel = "우수회원";
+		else if(vo.getLevel() == 2) strLevel = "정회원";
+		else if(vo.getLevel() == 3) strLevel = "준회원";
+
+		session.setAttribute("sMid", mid);
+		session.setAttribute("sNickName", vo.getNickName());
+		session.setAttribute("sLevel", vo.getLevel());
+		session.setAttribute("strLevel", strLevel);
+		session.setAttribute("sLastDate", vo.getLastDate());
+		
+		// 2.쿠키 저장/삭제		
+		
+		// 3. 기타처리(DB에 처리해야할것들(방문카운트, 포인트,... 등)
+		// 3-1. 기타처리 : 준회원을 정회원 등업처리.. 
+		//	(1) 준회원의 정회원 등업조건 : 방명록에 3회이상 글쓰기, 회원로그인 4일 이상
+		if(vo.getLevel() == 3 && vo.getVisitCnt() > 3) {
+			int guestCnt = guestService.getMemberSearch(mid, vo.getNickName(), vo.getName());
+			if(guestCnt >= 3) memberService.setMemberLevelUp(mid);
+		}
+
+		// (2) 오늘 첫방문이면 todayCnt = 0, 오늘 첫방문인지를 체크히가위한 변수 todaySw(1은첫방문, 0은 두번이상방문)
+		int todaySw = 0;
+		if(!LocalDateTime.now().toString().substring(0,10).equals(vo.getLastDate().substring(0,10))) {
+			memberService.setMemberTodayCntClear(mid);
+			vo.setTodayCnt(0);
+			todaySw = 1;
+		}
+		
+		// 3-2. 기타처리 : 
+		// (2) 정회원 이상부터는 방문카운트로 10포인트 증정(단, 방문포인트는 정회원 이상부터 지급하기로하고, 1일 50포인트까지만 제한처리)
+		if(vo.getLevel() != 3) {
+			int point = vo.getTodayCnt() < 5 ? 10 : 0;
+			memberService.setMemberInforUpdate(mid, point);
+		}
+		else memberService.setMemberInforUpdate(mid, 0);
+		
+		// 앞에서 모든 회원에 대하여 무조건 방문시 총방문횟수와 오늘 방문횟수를 증가시켰기에, 준회원인경우는 같은날 다시 방문했을경우는 '총방문횟수/오늘방문횟수'를 각각 1씩, 방문포인트는 -10을 뺀다.
+		// 따라서 방문카운트 4일 이상이되면 정회원으로 등업될수 있는 조건이 된다.
+		if(vo.getLevel() == 3 && todaySw == 0) memberService.setMemberInforUpdateMinus(mid);
+		
+		// 로그인 완료후 모든 처리가 끝나면 필요한 메세지처리후 memberMain으로 보낸다.
+		if(newMember.equals("NO")) return "redirect:/message/memberLoginOk?mid="+mid;
+		else return "redirect:/message/memberLoginNewOk?mid="+mid;
+	}
+	
+	// 일반 로그아웃 처리
 	@GetMapping("/memberLogout")
 	public String memberLogoutGet(HttpSession session) {
 		String mid = (String) session.getAttribute("sMid");
 		session.invalidate();
 		
 		return "redirect:/message/memberLogout?mid="+mid;
+	}
+	
+	// kakao 로그아웃(카카오개발자에서 '고급'탭에 Logout Redirect URI 등록시켜둬야한다.)
+	@GetMapping("/kakaoLogout")
+	public String kakaoLogoutGet(HttpSession session) {
+		String mid = (String) session.getAttribute("sMid");
+		String accessToken = (String) session.getAttribute("sAccessToken");
+		String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+		
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+			
+			// 카카오에서 정상적으로 처리 되었다면 200번이 돌아온다.
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		session.invalidate();
+		
+		return "redirect:/message/kakaoLogout?mid="+mid;
 	}
 	
 	// 회원 가입폼 보여주기

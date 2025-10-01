@@ -98,10 +98,10 @@
   <div>
     <div class="accordion"><b>상품관리</b></div>
     <div class="panel">
-      <p><a href="${ctp}/admin/guest/adminGuestList" target="adminContent" class="a-bg">상품분류등록</a></p>
-      <p><a href="" class="a-bg">상품등록관리</a></p>
-      <p><a href="" class="a-bg">상품등록조회</a></p>
-      <p><a href="" class="a-bg">옵션등록관리</a></p>
+      <p><a href="${ctp}/dbShop/dbCategory" target="adminContent">상품분류등록</a></p>
+      <p><a href="${ctp}/dbShop/dbProduct" target="adminContent">상품등록관리</a></p>
+      <p><a href="${ctp}/dbShop/dbShopList" target="adminContent">상품등록조회</a></p>
+      <p><a href="${ctp}/dbShop/dbOption" target="adminContent">옵션등록관리</a></p>
       <p><a href="" class="a-bg">주문관리</a></p>
       <p><a href="" class="a-bg">반품관리</a></p>
       <p><a href="" class="a-bg">1:1문의</a></p>

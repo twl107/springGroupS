@@ -95,12 +95,20 @@ public class MessageController {
 			model.addAttribute("message", mid+"님 로그인 되셨습니다.");
 			model.addAttribute("url", "/member/memberMain");
 		}
+		else if(msgFlag.equals("memberLoginNewOk")) {
+			model.addAttribute("message", mid+"님 로그인 되셨습니다.\\n신규 비밀번호가 발급되었습니다. 검점후 회원정보를 변경해주세요.");
+			model.addAttribute("url", "/member/memberMain");
+		}
 		else if(msgFlag.equals("memberLoginNo")) {
 			model.addAttribute("message", "로그인 실패~~");
 			model.addAttribute("url", "/member/memberLogin");
 		}
 		else if(msgFlag.equals("memberLogout")) {
 			model.addAttribute("message", mid + "님 로그아웃 되셨습니다.");
+			model.addAttribute("url", "/member/memberLogin");
+		}
+		else if(msgFlag.equals("kakaoLogout")) {
+			model.addAttribute("message", mid + "님 로그아웃 되셨습니다.(kakao)");
 			model.addAttribute("url", "/member/memberLogin");
 		}
 		else if(msgFlag.equals("mailSendOk")) {
@@ -204,6 +212,10 @@ public class MessageController {
 		else if(msgFlag.equals("transactionUserInputOk")) {
 			model.addAttribute("message", "회원 가입 완료...");
 			model.addAttribute("url", "/study2/transaction/transactionForm");
+		}
+		else if(msgFlag.equals("midSameSearch")) {
+			model.addAttribute("message", "같은 아이디가 존재합니다.(카카오로그인불가)");
+			model.addAttribute("url", "/member/kakaoLogout");
 		}
 
 		

@@ -30,6 +30,19 @@
 	  where year=#{year} and police like concat(#{policeZone},'%')
 	  order by year, police;
 	</select>
+	
+	<select id="getKakaoAddressSearch" resultType="com.spring.springGroupS.vo.KakaoAddressVO">
+		select * from kakaoAddress where address = #{address};
+	</select>
+	
+	<select id="getKakaoAddressList" resultType="com.spring.springGroupS.vo.KakaoAddressVO">
+		select * from kakaoAddress order by address;
+	</select>
+	
+	<select id="getQrCodeSearch" resultType="com.spring.springGroupS.vo.QrCodeVO">
+		select * from qrCode where qrCodeName = #{qrCode};
+	</select>
+	
 
 
 
@@ -54,6 +67,15 @@
   	insert into crime values (default,#{vo.year},#{vo.police},#{vo.robbery},#{vo.theft},#{vo.murder},#{vo.violence});
   </insert>
   
+  <insert id="setKakaoAddressInput">
+    insert into kakaoAddress values (default,#{vo.address},#{vo.latitude},#{vo.longitude});
+  </insert>
+  
+ 	<insert id="setQrCodeCreate">
+	  insert into qrCode values (default,#{vo.mid},#{vo.name},#{vo.email},#{vo.movieName},#{vo.movieDate},#{vo.movieTime},#{vo.movieAdult},#{vo.movieChild},#{vo.publishDate},#{vo.qrCodeName});
+	</insert>
+  
+  
   
   <delete id="setValidatorDeleteOk">
     delete from user where idx = #{idx};
@@ -61,6 +83,10 @@
   
   <delete id="setDeleteCrimeCheck">
     delete from crime where year = #{year};
+  </delete>
+  
+  <delete id="setKakaoAddressDelete">
+    delete from kakaoAddress where address = #{address};
   </delete>
   
   

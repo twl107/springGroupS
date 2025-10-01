@@ -17,7 +17,9 @@
 	    <mapping path="/member/**"/>
 	    <mapping path="/board/boardList"/>
 	    <exclude-mapping path="/member/memberLogin"/>
+	    <exclude-mapping path="/member/kakaoLogin"/>
 	    <exclude-mapping path="/member/memberLogout"/>
+	    <exclude-mapping path="/member/kakaoLogout"/>
 	    <exclude-mapping path="/member/memberJoin"/>
 	    <exclude-mapping path="/member/memberIdCheck"/>
 	    <exclude-mapping path="/member/memberNickCheck"/>
@@ -32,6 +34,7 @@
 	    <mapping path="/board/**"/>
 	    <mapping path="/review/**"/>
 	    <mapping path="/study1/**"/>
+	    <mapping path="/study2/**"/>
 	    <mapping path="/schedule/**"/>
 	    <mapping path="/pds/pdsList"/>
 	    <mapping path="/pds/pdsContent"/>
