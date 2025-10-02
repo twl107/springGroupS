@@ -18,7 +18,8 @@ public class MessageController {
 	public String getMessage(Model model, HttpSession session, PageVO pageVO,
 			@PathVariable String msgFlag,
 			@RequestParam(name="mid", defaultValue = "", required = false) String mid,
-			@RequestParam(name="idx", defaultValue = "0", required = false) int idx
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="tempFlag", defaultValue = "", required = false) String tempFlag
 			//@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			//@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
 		) {
@@ -217,7 +218,24 @@ public class MessageController {
 			model.addAttribute("message", "같은 아이디가 존재합니다.(카카오로그인불가)");
 			model.addAttribute("url", "/member/kakaoLogout");
 		}
-
+		else if(msgFlag.equals("dbProductInputOk")) {
+			model.addAttribute("message", "상품이 등록되었습니다.");
+			model.addAttribute("url", "/dbShop/dbShopList");
+		}
+		else if(msgFlag.equals("dbProductInputNo")) {
+			model.addAttribute("message", "상품 등록 실패~~");
+			model.addAttribute("url", "/dbShop/dbProduct");
+		}
+		else if(msgFlag.equals("dbOptionInputOk")) {
+			model.addAttribute("message", "옵션항목이 등록되었습니다.");
+			model.addAttribute("url", "/dbShop/dbOption?productName="+tempFlag);
+		}
+		else if(msgFlag.equals("dbOptionInputNo")) {
+			model.addAttribute("message", "옵션항목 등록 실패~~");
+			model.addAttribute("url", "/dbShop/dbOption?productName="+tempFlag);
+		}
+		
+		
 		
 		return "include/message";
 	}

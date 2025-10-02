@@ -749,4 +749,15 @@ public class Study1Controller {
 		return res;
 	}
 	
+	// Range Slider버튼 연습
+	@GetMapping("/rangeSlider/rangeSlider")
+	public String rangeSliderGet(Model model,
+			@RequestParam(name="price", defaultValue = "500000", required=false) int price
+		) {
+		model.addAttribute("price", price);
+		
+		return "study1/rangeSlider/rangeSlider";
+	}
+	
+	
 }
