@@ -13,7 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springGroupS.common.ProjectProvide;
 import com.spring.springGroupS.dao.DbShopDAO;
+import com.spring.springGroupS.vo.DbCartVO;
 import com.spring.springGroupS.vo.DbOptionVO;
+import com.spring.springGroupS.vo.DbOrderVO;
 import com.spring.springGroupS.vo.DbProductVO;
 
 @Service
@@ -147,7 +149,6 @@ public class DbShopServiceImpl implements DbShopService {
       else nextImg = nextImg.substring(nextImg.indexOf("src=\"/") + position);
     }
     
-    
     vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/dbShop/product/"));
 
     // 고유번호 idx값 만들기(상품코드 만들때 필요함)
@@ -192,8 +193,7 @@ public class DbShopServiceImpl implements DbShopService {
 	}
 
 	@Override
-	public List<DbProductVO> getCategoryProductNameAjax(String categoryMainCode, String categoryMiddleCode,
-			String categorySubCode) {
+	public List<DbProductVO> getCategoryProductNameAjax(String categoryMainCode, String categoryMiddleCode, String categorySubCode) {
 		return dbShopDAO.getCategoryProductNameAjax(categoryMainCode, categoryMiddleCode, categorySubCode);
 	}
 
@@ -220,6 +220,46 @@ public class DbShopServiceImpl implements DbShopService {
 	@Override
 	public int setOptionDelete(int idx) {
 		return dbShopDAO.setOptionDelete(idx);
+	}
+
+	@Override
+	public List<DbProductVO> getDbShopList(String part, int mainPrice) {
+		return dbShopDAO.getDbShopList(part, mainPrice);
+	}
+
+	@Override
+	public DbCartVO getDbCartProductOptionSearch(String productName, String optionName, String mid) {
+		return dbShopDAO.getDbCartProductOptionSearch(productName, optionName, mid);
+	}
+
+	@Override
+	public void dbShopCartUpdate(DbCartVO vo) {
+		dbShopDAO.dbShopCartUpdate(vo);
+	}
+
+	@Override
+	public void dbShopCartInput(DbCartVO vo) {
+		dbShopDAO.dbShopCartInput(vo);
+	}
+
+	@Override
+	public List<DbCartVO> getDbCartList(String mid) {
+		return dbShopDAO.getDbCartList(mid);
+	}
+
+	@Override
+	public int dbCartDelete(int idx) {
+		return dbShopDAO.dbCartDelete(idx);
+	}
+
+	@Override
+	public DbOrderVO getOrderMaxIdx() {
+		return dbShopDAO.getOrderMaxIdx();
+	}
+
+	@Override
+	public DbCartVO getCartIdx(int idx) {
+		return dbShopDAO.getCartIdx(idx);
 	}
 	
 }

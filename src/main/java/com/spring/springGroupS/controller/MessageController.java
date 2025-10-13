@@ -206,36 +206,11 @@ public class MessageController {
 			model.addAttribute("message", "자료실에 자료가 등록되었습니다.");
 			model.addAttribute("url", "/pds/pdsList");
 		}
-		else if(msgFlag.equals("pdsInputNo")) {
-			model.addAttribute("message", "자료실에 자료 등록 실패~~");
-			model.addAttribute("url", "/pds/pdsInput");
+		else if(msgFlag.equals("cartEmpty")) {
+			model.addAttribute("message", "장바구니가 비어있습니다.");
+			model.addAttribute("url", "/dbShop/dbProductList");
 		}
-		else if(msgFlag.equals("transactionUserInputOk")) {
-			model.addAttribute("message", "회원 가입 완료...");
-			model.addAttribute("url", "/study2/transaction/transactionForm");
-		}
-		else if(msgFlag.equals("midSameSearch")) {
-			model.addAttribute("message", "같은 아이디가 존재합니다.(카카오로그인불가)");
-			model.addAttribute("url", "/member/kakaoLogout");
-		}
-		else if(msgFlag.equals("dbProductInputOk")) {
-			model.addAttribute("message", "상품이 등록되었습니다.");
-			model.addAttribute("url", "/dbShop/dbShopList");
-		}
-		else if(msgFlag.equals("dbProductInputNo")) {
-			model.addAttribute("message", "상품 등록 실패~~");
-			model.addAttribute("url", "/dbShop/dbProduct");
-		}
-		else if(msgFlag.equals("dbOptionInputOk")) {
-			model.addAttribute("message", "옵션항목이 등록되었습니다.");
-			model.addAttribute("url", "/dbShop/dbOption?productName="+tempFlag);
-		}
-		else if(msgFlag.equals("dbOptionInputNo")) {
-			model.addAttribute("message", "옵션항목 등록 실패~~");
-			model.addAttribute("url", "/dbShop/dbOption?productName="+tempFlag);
-		}
-		
-		
+
 		
 		return "include/message";
 	}

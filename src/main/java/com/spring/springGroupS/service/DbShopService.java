@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.springGroupS.vo.DbCartVO;
 import com.spring.springGroupS.vo.DbOptionVO;
+import com.spring.springGroupS.vo.DbOrderVO;
 import com.spring.springGroupS.vo.DbProductVO;
 
 public interface DbShopService {
@@ -53,8 +55,7 @@ public interface DbShopService {
 
 	DbProductVO getCategoryProductNameOneVO(DbProductVO imsiVO);
 
-	List<DbProductVO> getCategoryProductNameAjax(String categoryMainCode, String categoryMiddleCode,
-			String categorySubCode);
+	List<DbProductVO> getCategoryProductNameAjax(String categoryMainCode, String categoryMiddleCode, String categorySubCode);
 
 	DbProductVO getProductInfor(String productName);
 
@@ -65,5 +66,21 @@ public interface DbShopService {
 	int setDbOptionInput(DbOptionVO vo);
 
 	int setOptionDelete(int idx);
+
+	List<DbProductVO> getDbShopList(String part, int mainPrice);
+
+	DbCartVO getDbCartProductOptionSearch(String productName, String optionName, String mid);
+
+	void dbShopCartUpdate(DbCartVO vo);
+
+	void dbShopCartInput(DbCartVO vo);
+
+	List<DbCartVO> getDbCartList(String mid);
+
+	int dbCartDelete(int idx);
+
+	DbOrderVO getOrderMaxIdx();
+
+	DbCartVO getCartIdx(int idx);
 
 }
