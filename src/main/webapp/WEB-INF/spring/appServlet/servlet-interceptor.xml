@@ -35,6 +35,8 @@
 	    <mapping path="/review/**"/>
 	    <mapping path="/study1/**"/>
 	    <mapping path="/study2/**"/>
+	    <mapping path="/dbShop/**"/>
+	    <mapping path="/inquiry/**"/>
 	    <mapping path="/schedule/**"/>
 	    <mapping path="/pds/pdsList"/>
 	    <mapping path="/pds/pdsContent"/>

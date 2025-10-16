@@ -117,7 +117,7 @@
       <p><a href="" class="a-bg">쿠폰관리</a></p>
       <p><a href="" class="a-bg">임시파일관리</a></p>
       <p><a href="" class="a-bg">실시간상담</a></p>
-      <p><a href="" class="a-bg">1:1문의</a></p>
+      <p><a href="${ctp}/admin/inquiry/adInquiryList" class="a-bg" target="adminContent">1:1문의</a></p>
       <p><a href="" class="a-bg">상품메인이미지관리</a></p>
     </div>
   </div>
