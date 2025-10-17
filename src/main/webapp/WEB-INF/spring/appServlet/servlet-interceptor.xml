@@ -37,6 +37,7 @@
 	    <mapping path="/study2/**"/>
 	    <mapping path="/dbShop/**"/>
 	    <mapping path="/inquiry/**"/>
+	    <mapping path="/webSocket/**"/>
 	    <mapping path="/schedule/**"/>
 	    <mapping path="/pds/pdsList"/>
 	    <mapping path="/pds/pdsContent"/>

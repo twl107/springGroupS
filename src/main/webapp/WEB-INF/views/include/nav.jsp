@@ -88,6 +88,7 @@
 	      	<c:if test="${sLevel < 3}">
 		        <a href="${ctp}/schedule/schedule" class="w3-bar-item w3-button">일정관리</a>
 		        <a href="${ctp}/study1/aop/aopMenu" class="w3-bar-item w3-button">웹메세지</a>
+		        <a href="${ctp}/webSocket/webSocket" class="w3-bar-item w3-button">웹소켓 채팅</a>
 		        <a href="${ctp}/study1/xml/xmlMenu" class="w3-bar-item w3-button">Photo Gallery</a>
 		        <a href="${ctp}/member/memberList" class="w3-bar-item w3-button">회원리스트</a>
 	        </c:if>
