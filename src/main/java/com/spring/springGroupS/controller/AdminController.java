@@ -203,6 +203,8 @@ public class AdminController {
 		return res;
 	}
 	
+	
+	
 	// 관리자 답변글 수정처리
 	@PostMapping("/inquiry/adInquiryReply")
 	public String adInquiryReplyUpdatePost(InquiryReplyVO reVO) {
@@ -211,6 +213,8 @@ public class AdminController {
 		if(res != 0) return "redirect:/message/adInpuiryReplyUpdateOk?idx="+reVO.getInquiryIdx();
 		return "redirect:/message/adInpuiryReplyUpdateNo?idx="+reVO.getInquiryIdx();
 	}
+	
+	
 	
 	// 답변글만 삭제하기(답변글을 삭제처리하면 원본글의 '상태'는 '답변대기중'으로 수정해준다.
 	@Transactional

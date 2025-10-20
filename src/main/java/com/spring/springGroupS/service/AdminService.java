@@ -34,6 +34,8 @@ public interface AdminService {
 
 	int setAdScheduleInput(ScheduleVO vo);
 	
+	
+	
 	ArrayList<InquiryVO> getInquiryListAdmin(int startIndexNo, int pageSize, String part);
 
 	InquiryVO getInquiryContent(int idx);
