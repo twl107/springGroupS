@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 	<script>
 		var IMP = window.IMP; 
-    IMP.init("imp50352711");
+    IMP.init("imp21064327");
 		
 		IMP.request_pay({
 		    pg : 'html5_inicis.INIpayTest',

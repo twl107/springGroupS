@@ -10,7 +10,7 @@ import com.spring.springGroupS.vo.UserVO;
 @Controller
 @RequestMapping("/error")
 public class ErrorController {
-	
+
 	@GetMapping("/errorForm")
 	public String errorFormGet() {
 		return "error/errorForm";
@@ -55,8 +55,17 @@ public class ErrorController {
 	
 	@GetMapping("/errorTest500")
 	public String errorTest500Get(UserVO vo) {
-		int len = vo.getMid().length();
-		System.out.println("idx : " + len);
+//		int len = vo.getMid().length();
+//		System.out.println("len : " + len);
+		
+		//String su = "010";
+//		String su = "O1O";
+//		int intSu = Integer.parseInt(su);
+//		System.out.println("intSu : " + intSu);
+		
+		int su = 10 / 0;
+		System.out.println("su : " + su);
+		
 		return "error/error500";
 	}
 	
@@ -70,15 +79,14 @@ public class ErrorController {
 		return "error/errorNullPointer";
 	}
 	
+	@GetMapping("/errorNumberFormat")
+	public String errorNumberFormatGet() {
+		return "error/errorNumberFormat";
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/errorArithmetic")
+	public String errorArithmeticGet() {
+		return "error/errorArithmetic";
+	}
 	
 }

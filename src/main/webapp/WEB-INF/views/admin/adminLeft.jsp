@@ -98,13 +98,13 @@
   <div>
     <div class="accordion"><b>상품관리</b></div>
     <div class="panel">
-      <p><a href="${ctp}/dbShop/dbCategory" target="adminContent">상품분류등록</a></p>
-      <p><a href="${ctp}/dbShop/dbProduct" target="adminContent">상품등록관리</a></p>
-      <p><a href="${ctp}/dbShop/dbShopList" target="adminContent">상품등록조회</a></p>
-      <p><a href="${ctp}/dbShop/dbOption" target="adminContent">옵션등록관리</a></p>
-      <p><a href="" class="a-bg">주문관리</a></p>
+      <p><a href="${ctp}/dbShop/dbCategory" target="adminContent" class="a-bg">상품분류등록</a></p>
+      <p><a href="${ctp}/dbShop/dbProduct" target="adminContent" class="a-bg">상품등록관리</a></p>
+      <p><a href="${ctp}/dbShop/dbShopList" target="adminContent" class="a-bg">상품등록조회</a></p>
+      <p><a href="${ctp}/dbShop/dbOption" target="adminContent" class="a-bg">옵션등록관리</a></p>
+      <p><a href="${ctp}/dbShop/adminOrderStatus" target="adminContent" class="a-bg">주문관리</a></p>
       <p><a href="" class="a-bg">반품관리</a></p>
-      <p><a href="" class="a-bg">1:1문의</a></p>
+      <p><a href="#" class="a-bg">1:1문의</a></p>
       <p><a href="" class="a-bg">상품메인이미지관리</a></p>
     </div>
   </div>
@@ -115,7 +115,7 @@
       <p><a href="" class="a-bg">FAQ관리</a></p>
       <p><a href="" class="a-bg">QnA관리</a></p>
       <p><a href="" class="a-bg">쿠폰관리</a></p>
-      <p><a href="" class="a-bg">임시파일관리</a></p>
+      <p><a href="" class="a-bg" target="adminContent">임시파일관리</a></p>
       <p><a href="" class="a-bg">실시간상담</a></p>
       <p><a href="${ctp}/admin/inquiry/adInquiryList" class="a-bg" target="adminContent">1:1문의</a></p>
       <p><a href="" class="a-bg">상품메인이미지관리</a></p>

@@ -285,6 +285,13 @@
       <version>1.1</version>
     </dependency>
 		
+		<!-- 스케줄러(scheduler) 라이브러리 추가(3개- 필수는 1개만처리) (초 분 시 일 월 년) -->
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+	    <groupId>org.quartz-scheduler</groupId>
+	    <artifactId>quartz</artifactId>
+	    <version>2.3.2</version>
+		</dependency>
 		
 		
 		

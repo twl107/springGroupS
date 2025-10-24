@@ -759,5 +759,4 @@ public class Study1Controller {
 		return "study1/rangeSlider/rangeSlider";
 	}
 	
-	
 }

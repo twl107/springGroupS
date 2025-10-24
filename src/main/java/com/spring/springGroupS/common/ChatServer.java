@@ -14,21 +14,21 @@ import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint("/chatserver")
 public class ChatServer {
-	// 채팅서버에 접속한 클라이언트 목록들을 저장하기 위해 생성
+	// 채팅서버에 접속한 클라이언트 목록들을 저장하기위해 생성
 	private static List<Session> userList = new ArrayList<Session>();
 	
 	private void print(String msg) {
 		System.out.printf("[%tT] %s\n", Calendar.getInstance(), msg);
 	}
 	
-	// 채팅서버 최초 접속 시 수행
+	// 채팅서버 최초 접속시 수행
 	@OnOpen
 	public void handleOpen(Session session) {
 		print("클라이언트 연결 : sessionID : " + session.getId());
 		userList.add(session);
 	}
 	
-	// 클라이언트에서 접속하면 무조건 처리(메세지/접속/종료)
+	// 클라이언트에서 접속하면 무조건 처리(메세지/접속/종료)한다.
 	@OnMessage
 	public void handleMessage(String msg, Session session) {
 		// 로그인시 msg  : '1#유저명#메세지@색상'으로 넘어온다.
@@ -37,12 +37,12 @@ public class ChatServer {
 		
 		// msg에 '2#행복천#안녕'또는, '2#행복천#안녕@FF0000'이 넘어왔다고 가장하자.
 		
-		int index = msg.indexOf("#", 2);				//
-		String no = msg.substring(0, 1);				// 1:최초접속, 2:일반메세지. 3:종료
+		int index = msg.indexOf("#", 2);	// 
+		String no = msg.substring(0, 1);	// 1:최초접속, 2:일반메세지, 3:종료
 		String user = msg.substring(2, index);	// 접속 유저 아이디
 		String txt = msg.substring(index + 1);	// 전달한 메세지
 		
-		if(txt.indexOf("@") != -1) {						// 메세지 안에 @가 포함되어 있으면 색깔을 변경할 수 있도록 처리
+		if(txt.indexOf("@") != -1) {	// 메세지안에 @가 포함되어 있으면 색깔을 변경할수 있도록 처리
 			txt = txt.substring(0, txt.lastIndexOf("@")); 
 			String chatColor = msg.substring(msg.lastIndexOf("@")+1);
 			txt = " <font color=\""+chatColor+"\">"+txt+"</font>";
@@ -79,14 +79,14 @@ public class ChatServer {
 		
 	}
 
-	// 접속 종료 시 수행
+	// 접속 종료시 수행
 	@OnClose
 	public void handleClose(Session session) {
 		System.out.println("Websocket Close");
 		userList.remove(session);
 	}
 	
-	// 에러 발생 시 수행
+	// 에러 발생시 수행
 	@OnError
 	public void handleError(Throwable t) {
 		System.out.println("웹소켓 전송 에러입니다.");

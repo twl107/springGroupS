@@ -107,7 +107,7 @@ public class ProjectProvide {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 		return sdf.format(date) + "_" + oFileName;
 	}
-	
+
 	// 원본파일을 지정된 경로로 복사시켜주기
 	public void fileCopyCheck(String oriFilePath, String copyFilePath) {
 		File oriFile = new File(oriFilePath);
@@ -131,11 +131,5 @@ public class ProjectProvide {
       e.printStackTrace();
     }
 	}
-	
-	
-	
-	
-	
-	
 	
 }

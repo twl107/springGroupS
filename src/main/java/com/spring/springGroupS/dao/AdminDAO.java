@@ -33,9 +33,7 @@ public interface AdminDAO {
 	List<ScheduleVO> getScheduleMainList();
 
 	int setAdScheduleInput(@Param("vo") ScheduleVO vo);
-	
-	
-	
+
 	ArrayList<InquiryVO> getInquiryListAdmin(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("part") String part);
 
 	InquiryVO getInquiryContent(@Param("idx") int idx);

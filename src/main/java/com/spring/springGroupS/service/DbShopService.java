@@ -46,7 +46,7 @@ public interface DbShopService {
 
 	List<DbProductVO> getSubTitle();
 
-	List<DbProductVO> getDbShopList(String part);
+	List<DbProductVO> getDbShopList(String part, String mainPrice);
 
 	DbProductVO getDbShopProduct(int idx);
 
@@ -97,5 +97,12 @@ public interface DbShopService {
 	List<DbBaesongVO> getOrderBaesong(String orderIdx);
 
 	List<DbBaesongVO> getMyOrderList(int startIndexNo, int pageSize, String mid);
+
+	List<DbBaesongVO> getAdminOrderStatus(int startIndexNo, int pageSize, String startJumun, String endJumun,
+			String orderStatus);
+
+	int setOrderStatusUpdate(String orderIdx, String orderStatus);
+
+	List<DbBaesongVO> getMyOrderStatus(int startIndexNo, int pageSize, String mid, String startJumun, String endJumun, String conditionOrderStatus);
 
 }

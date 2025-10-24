@@ -84,7 +84,7 @@ public class AdminServiceImpl implements AdminService {
 	public int setAdScheduleInput(ScheduleVO vo) {
 		return adminDAO.setAdScheduleInput(vo);
 	}
-	
+
 	@Override
 	public ArrayList<InquiryVO> getInquiryListAdmin(int startIndexNo, int pageSize, String part) {
 		return adminDAO.getInquiryListAdmin(startIndexNo, pageSize, part);

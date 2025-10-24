@@ -43,6 +43,14 @@
 		select * from qrCode where qrCodeName = #{qrCode};
 	</select>
 	
+	<select id="getKakaoAddressSearchIdx" resultType="com.spring.springGroupS.vo.KakaoAddressVO">
+		select * from kakaoAddress where idx = #{idx};
+	</select>
+	
+	<select id="getKakaoAddressPlaceSearch"  resultType="com.spring.springGroupS.vo.KakaoPlaceVO">
+	  select *,(select address from kakaoAddress where idx=k.addressIdx) as address from kakaoPlace k where addressIdx = #{idx};
+	</select>
+	
 
 
 
@@ -73,6 +81,10 @@
   
  	<insert id="setQrCodeCreate">
 	  insert into qrCode values (default,#{vo.mid},#{vo.name},#{vo.email},#{vo.movieName},#{vo.movieDate},#{vo.movieTime},#{vo.movieAdult},#{vo.movieChild},#{vo.publishDate},#{vo.qrCodeName});
+	</insert>
+	
+	<insert id="setKakaoPlaceInput">
+	  insert into kakaoPlace values (default,#{vo.addressIdx},#{vo.latitude},#{vo.longitude},#{vo.place},#{vo.content});
 	</insert>
   
   

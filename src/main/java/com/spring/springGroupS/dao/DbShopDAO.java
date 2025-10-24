@@ -48,7 +48,7 @@ public interface DbShopDAO {
 
 	List<DbProductVO> getSubTitle();
 
-	List<DbProductVO> getDbShopList(@Param("part") String part);
+	List<DbProductVO> getDbShopList(@Param("part") String part, @Param("mainPrice") String mainPrice);
 
 	DbProductVO getDbShopProduct(@Param("idx") int idx);
 
@@ -101,5 +101,13 @@ public interface DbShopDAO {
 	int getTotRecCnt(@Param("mid") String mid);
 
 	List<DbBaesongVO> getMyOrderList(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("mid") String mid);
+
+	int totRecCntAdminStatus(@Param("startJumun") String startJumun, @Param("endJumun") String endJumun, @Param("orderStatus") String orderStatus);
+
+	List<DbBaesongVO> getAdminOrderStatus(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("startJumun") String startJumun, @Param("endJumun") String endJumun, @Param("orderStatus") String orderStatus);
+
+	int setOrderStatusUpdate(@Param("orderIdx") String orderIdx, @Param("orderStatus") String orderStatus);
+
+	List<DbBaesongVO> getMyOrderStatus(@Param("startIndexNo") int startIndexNo, @Param("pageSize") int pageSize, @Param("mid") String mid, @Param("startJumun") String startJumun, @Param("endJumun") String endJumun, @Param("conditionOrderStatus") String conditionOrderStatus);
 
 }

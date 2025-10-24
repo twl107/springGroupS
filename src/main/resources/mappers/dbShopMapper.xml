@@ -126,23 +126,65 @@
   <select id="getCartIdx" resultType="com.spring.springGroupS.vo.DbCartVO">
   	select * from dbCart where idx = #{idx};
   </select>
-
+  
   <select id="getTotalBaesongOrder" resultType="int">
     select orderTotalPrice from dbBaesong where orderIdx = #{orderIdx};
   </select>
   
   <select id="getOrderBaesong" resultType="com.spring.springGroupS.vo.DbBaesongVO">
     select * from dbBaesong where orderIdx = #{orderIdx};
-  </select>  
-  
+  </select>
+
   <select id="getTotRecCnt" resultType="int">
     select count(*) from dbOrder o join dbBaesong b using(orderIdx) <if test="mid != '전체'"> where b.mid=#{mid} </if>
   </select>
   
   <select id="getMyOrderList" resultType="com.spring.springGroupS.vo.DbBaesongVO">
-    select o.*,b.* from dbOrder o join dbBaesong b using(orderIdx) <if test="mid != '전체'"> where b.mid=#{mid} </if> order by b.idx desc limit #{startIndexNo},#{pageSize}; 
-  </select>  
-    
+    <!-- select o.*,b.* from dbOrder o join dbBaesong b using(orderIdx) <if test="mid != '전체'"> where b.mid=#{mid} </if> order by b.idx desc limit #{startIndexNo},#{pageSize}; --> 
+    <if test='mid == "전체"'>
+      SELECT oder.*,baesong.* from dbOrder oder join dbBaesong baesong using(orderIdx) 
+      where date(orderDate) = substring(now(),1,10) order by baesong.idx desc limit #{startIndexNo},#{pageSize};
+    </if>
+    <if test='mid != "전체"'>
+      SELECT oder.*,baesong.* from dbOrder oder join dbBaesong baesong using(orderIdx) 
+      where baesong.mid=#{mid} and date(orderDate) = substring(now(),1,10) order by baesong.idx desc limit #{startIndexNo},#{pageSize};
+    </if> 
+  </select>
+  
+  <select id="totRecCntAdminStatus" resultType="int">
+    <if test="orderStatus == '전체'">
+      select count(*) from dbOrder a join dbBaesong b using(orderIdx) <![CDATA[ where date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) order by orderDate desc ]]>;
+    </if>
+    <if test="orderStatus != '전체'">
+      select count(*) from dbOrder a join dbBaesong b using(orderIdx) <![CDATA[ where date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) and b.orderStatus=#{orderStatus} order by orderDate desc ]]>;
+    </if>
+  </select>
+  
+  <select id="getAdminOrderStatus" resultType="com.spring.springGroupS.vo.DbBaesongVO">
+    <if test='orderStatus == "전체"'>
+      select a.*,b.* from dbOrder a join dbBaesong b using(orderIdx) <![CDATA[ where date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) order by orderDate desc ]]> limit #{startIndexNo},#{pageSize};
+    </if>
+    <if test='orderStatus != "전체"'>
+      select a.*,b.* from dbOrder a join dbBaesong b using(orderIdx) <![CDATA[ where date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) and b.orderStatus=#{orderStatus} order by orderDate desc ]]> limit #{startIndexNo},#{pageSize};
+    </if>
+  </select>
+  
+  <select id="getMyOrderStatus" resultType="com.spring.springGroupS.vo.DbBaesongVO">
+    <if test="mid == '전체' and conditionOrderStatus == '전체'">
+      select o.*,b.* from dbOrder o join dbBaesong b using(orderIdx) where <![CDATA[ date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) order by orderDate desc ]]> limit #{startIndexNo},#{pageSize};
+    </if>
+    <if test="mid == '전체' and conditionOrderStatus != '전체'">
+      select o.*,b.* from dbOrder o join dbBaesong b using(orderIdx) where <![CDATA[ date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) and b.orderStatus=#{conditionOrderStatus} order by orderDate desc ]]> limit #{startIndexNo},#{pageSize};
+    </if>
+    <if test="mid != '전체' and conditionOrderStatus == '전체'">
+      select o.*,b.* from dbOrder o join dbBaesong b using(orderIdx) where b.mid = #{mid} <![CDATA[ and date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) order by orderDate desc ]]> limit #{startIndexNo},#{pageSize};
+    </if>
+    <if test="mid != '전체' and conditionOrderStatus != '전체'">
+      select o.*,b.* from dbOrder o join dbBaesong b using(orderIdx) where b.mid = #{mid} <![CDATA[ and date(orderDate) >= date(#{startJumun}) and date(orderDate) <= date(#{endJumun}) and b.orderStatus=#{conditionOrderStatus} order by orderDate desc ]]> limit #{startIndexNo},#{pageSize};
+    </if>
+  </select>
+  
+  
   
   
   <insert id="setCategoryMainInput">
@@ -172,12 +214,10 @@
   <insert id="setDbOrder">
     insert into dbOrder values (default,#{vo.orderIdx},#{vo.mid},#{vo.productIdx},default,#{vo.productName},#{vo.mainPrice},#{vo.thumbImg},#{vo.optionName},#{vo.optionPrice},#{vo.optionNum},#{vo.totalPrice});
   </insert>
-
+  
   <insert id="setDbBaesong">
     insert into dbBaesong values (default,#{baesongVO.oIdx},#{baesongVO.orderIdx},#{baesongVO.orderTotalPrice},#{baesongVO.mid},#{baesongVO.name},#{baesongVO.address},#{baesongVO.tel},#{baesongVO.message},#{baesongVO.payment},#{baesongVO.payMethod},default);
-  </insert>  
-  
-  
+  </insert>
   
   
   
@@ -188,6 +228,10 @@
   
   <update id="setMemberPointPlus">
     update member set point = point + #{point} where mid = #{mid};
+  </update>
+  
+  <update id="setOrderStatusUpdate">
+    update dbBaesong set orderStatus = #{orderStatus} where orderIdx = #{orderIdx};
   </update>
   
   
@@ -215,7 +259,7 @@
   
   <delete id="setDbCartDeleteAll">
     delete from dbCart where idx = #{cartIdx};
-  </delete>  
+  </delete>
   
 
 </mapper>

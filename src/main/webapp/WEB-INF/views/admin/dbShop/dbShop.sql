@@ -51,6 +51,8 @@ create table dbProduct (
   foreign key(categorySubCode) references categorySub(categorySubCode)
 );
 
+select * from dbProduct where mainPrice < 1000000 order by idx desc;
+
 /* 상품 옵션 */
 create table dbOption (
   idx    int not null auto_increment, /* 옵션 고유번호 */
@@ -118,7 +120,7 @@ drop table dbOrder;
 /* 배송테이블 */
 create table dbBaesong (
   idx     int not null auto_increment,
-  oIdx    int not null,								/* 주문테이블의 고유번호를 외래키로 지정함 */
+  oIdx    int not null,								/* 주문테이블의 고유번호를 (외래키로 지정함-X) */
   orderIdx    varchar(15) not null,   /* 주문 고유번호 */
   orderTotalPrice int     not null,   /* 주문한 모든 상품의 총 가격 */
   mid         varchar(20) not null,   /* 회원 아이디 */
@@ -134,5 +136,3 @@ create table dbBaesong (
 );
 desc dbBaesong;
 drop table dbBaesong;
-
-

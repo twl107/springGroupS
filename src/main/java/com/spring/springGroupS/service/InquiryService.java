@@ -8,6 +8,7 @@ import com.spring.springGroupS.vo.InquiryReplyVO;
 import com.spring.springGroupS.vo.InquiryVO;
 
 public interface InquiryService {
+
 	List<InquiryVO> getInquiryList(int startIndexNo, int pageSize, String part, String mid);
 
 	void setInquiryInput(MultipartFile file, InquiryVO vo);
@@ -19,4 +20,5 @@ public interface InquiryService {
 	int setInquiryUpdate(MultipartFile file, InquiryVO vo);
 
 	int setInquiryDelete(int idx, String fSName);
+
 }

@@ -28,7 +28,7 @@ import com.spring.springGroupS.vo.ChartVO;
 import com.spring.springGroupS.vo.CrimeVO;
 import com.spring.springGroupS.vo.DbPayMentVO;
 import com.spring.springGroupS.vo.KakaoAddressVO;
-import com.spring.springGroupS.vo.QrCodeVO;
+import com.spring.springGroupS.vo.KakaoPlaceVO;
 import com.spring.springGroupS.vo.TransactionVO;
 
 @Controller
@@ -79,7 +79,6 @@ public class Study2Controller {
 	}
 	
 	// validator 유저 회원 가입처리
-	@SuppressWarnings("deprecation")
 	@ResponseBody
 	@PostMapping(value="/validator/validatorForm", produces="application/text; charset=utf8")
 	public String validatorFormPost(@Validated TransactionVO vo, BindingResult br) {
@@ -299,6 +298,56 @@ public class Study2Controller {
 		return "study2/kakao/kakaoEx4";
 	}
 	
+  // 카카오맵 MyDB에 저장된 지명 주변지역 검색하여 좌표 보여주기
+	@GetMapping("/kakao/kakaoEx5")
+	public String kakaoEx5Get(Model model,
+			@RequestParam(name="address", defaultValue = "", required = false) String address
+		) {
+		//System.out.println("address : " + address);
+		KakaoAddressVO vo = new KakaoAddressVO();
+		
+		List<KakaoAddressVO> addressVos = study2Service.getKakaoAddressList();
+		System.out.println("addressVos : " + addressVos);
+		if(address.equals("")) {
+			vo.setAddress("청주그린컴퓨터");
+			vo.setLatitude(36.63508163115122);
+			vo.setLongitude(127.45948750459904);
+			vo.setIdx(2);
+		}
+		else {
+			vo = study2Service.getKakaoAddressSearch(address);
+		}
+		model.addAttribute("addressVos", addressVos);
+		model.addAttribute("vo", vo);
+		
+		return "study2/kakao/kakaoEx5";
+	}
+	
+	// 카카오맵에서 선택한 지역을 MyDB에 저장
+	@ResponseBody
+	@PostMapping("/kakao/kakaoEx5")
+	public int kakaoEx5Post(KakaoPlaceVO vo) {
+		return study2Service.setKakaoPlaceInput(vo);
+	}
+	
+	/*
+	 * // Kakaomap(KakaoDB에 저장된 장소와 주변 표시)
+	 * 
+	 * @GetMapping("/kakao/kakaoEx6") public String kakaoEx6Get(Model model,
+	 * 
+	 * @RequestParam(name="idx", defaultValue = "14", required = false) int idx //
+	 * '청주그린컴퓨터'가 db에 'idx=14'번이다. ) { KakaoAddressVO centerVO =
+	 * study2Service.getKakaoAddressSearchIdx(idx); // 중심좌표 List<KakaoAddressVO>
+	 * addressVos = study2Service.getKakaoAddressList(); // 콤보상사에 출력될 지역들
+	 * 
+	 * List<KakaoPlaceVO> vo = study2Service.getKakaoAddressPlaceSearch(idx); // 지도에
+	 * 표시될 주변관광지 String json = new Gson().toJson(vo); // JSON 객체로 바꿔서 넘겨준다.
+	 * 
+	 * model.addAttribute("addressVos", addressVos); model.addAttribute("voJson",
+	 * json); model.addAttribute("centerVO", centerVO); model.addAttribute("idx",
+	 * idx); return "study2/kakao/kakaoEx6"; }
+	 */
+	
 	// 날씨 API 폼
 	@GetMapping("/weather/weatherForm")
 	public String weatherFormGet(Model model) {
@@ -313,84 +362,87 @@ public class Study2Controller {
 		return "study2/qrCode/qrCodeForm";
 	}
 	
-	// QR Code 생성하기
-	@ResponseBody
-	@PostMapping("/qrCode/qrCodeCreate")
-	public String qrCodeCreatePost(HttpServletRequest request, HttpSession session, QrCodeVO vo) {
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
-		vo.setFlag(0);
-		vo.setMid((String) session.getAttribute("sMid"));
-		return study2Service.setQrCodeCreate(realPath, vo);
-	}
-	
-	// QR Code 개인정보 QR 코드로 생성하기 폼보기
-	@GetMapping("/qrCode/qrCodeEx1")
-	public String qrCodeEx1Get() {
-		return "study2/qrCode/qrCodeEx1";
-	}
-	
-	// QR Code 개인정보 QR 코드 생성
-	@ResponseBody
-	@PostMapping("/qrCode/qrCodeEx1")
-	public String qrCodeEx1Post(HttpServletRequest request, QrCodeVO vo) {
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
-		vo.setFlag(1);
-		return study2Service.setQrCodeCreate(realPath, vo);
-	}
-	
-	// QR Code 소개사이트 주소 생성하기 폼보기
-	@GetMapping("/qrCode/qrCodeEx2")
-	public String qrCodeEx2Get() {
-		return "study2/qrCode/qrCodeEx2";
-	}
-	
-	// QR Code 소개사이트 주소 생성하기
-	@ResponseBody
-	@PostMapping("/qrCode/qrCodeEx2")
-	public String qrCodeEx2Post(HttpServletRequest request, QrCodeVO vo, HttpSession session) {
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
-		vo.setFlag(2);
-		vo.setMid((String) session.getAttribute("sMid"));
-		return study2Service.setQrCodeCreate(realPath, vo);
-	}
-	
-	// QR Code 티켓예매 폼보기
-	@GetMapping("/qrCode/qrCodeEx3")
-	public String qrCodeEx3Get() {
-		return "study2/qrCode/qrCodeEx3";
-	}
-	
-	// QR Code 티켓예매 생성하기
-	@ResponseBody
-	@PostMapping("/qrCode/qrCodeEx3")
-	public String qrCodeEx3Post(HttpServletRequest request, QrCodeVO vo) {
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
-		vo.setFlag(3);
-		return study2Service.setQrCodeCreate(realPath, vo);
-	}
-	
-	// QR Code 티켓예매 폼보기(DB저장 검색)
-	@GetMapping("/qrCode/qrCodeEx4")
-	public String qrCodeEx4Get() {
-		return "study2/qrCode/qrCodeEx4";
-	}
-	
-	// QR Code 티켓예매 생성하기(DB저장 검색)
-	@ResponseBody
-	@PostMapping(value = "/qrCode/qrCodeEx4")
-	public String qrCodeEx4Post(HttpServletRequest request, QrCodeVO vo) {
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
-		vo.setFlag(4);
-		return study2Service.setQrCodeCreate(realPath, vo);
-	}
-	
-	// QR Code명 검색하기(DB저장 검색)
-	@ResponseBody
-	@RequestMapping(value = "/qrCode/qrCodeSearch", method = RequestMethod.POST)
-	public QrCodeVO qrCodeSearchPost(String qrCode) {
-		return study2Service.getQrCodeSearch(qrCode);
-	}
-	
+	/*
+	 * // QR Code 생성하기
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/qrCode/qrCodeCreate") public String
+	 * qrCodeCreatePost(HttpServletRequest request, HttpSession session, QrCodeVO
+	 * vo) { String realPath = request.getSession().getServletContext().getRealPath(
+	 * "/resources/data/qrCode/"); vo.setFlag(0); vo.setMid((String)
+	 * session.getAttribute("sMid")); return study2Service.setQrCodeCreate(realPath,
+	 * vo); }
+	 * 
+	 * // QR Code 개인정보 QR 코드로 생성하기 폼보기
+	 * 
+	 * @GetMapping("/qrCode/qrCodeEx1") public String qrCodeEx1Get() { return
+	 * "study2/qrCode/qrCodeEx1"; }
+	 * 
+	 * // QR Code 개인정보 QR 코드 생성
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/qrCode/qrCodeEx1") public String
+	 * qrCodeEx1Post(HttpServletRequest request, QrCodeVO vo) { String realPath =
+	 * request.getSession().getServletContext().getRealPath(
+	 * "/resources/data/qrCode/"); vo.setFlag(1); return
+	 * study2Service.setQrCodeCreate(realPath, vo); }
+	 * 
+	 * // QR Code 소개사이트 주소 생성하기 폼보기
+	 * 
+	 * @GetMapping("/qrCode/qrCodeEx2") public String qrCodeEx2Get() { return
+	 * "study2/qrCode/qrCodeEx2"; }
+	 * 
+	 * // QR Code 소개사이트 주소 생성하기
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/qrCode/qrCodeEx2") public String
+	 * qrCodeEx2Post(HttpServletRequest request, QrCodeVO vo, HttpSession session) {
+	 * String realPath = request.getSession().getServletContext().getRealPath(
+	 * "/resources/data/qrCode/"); vo.setFlag(2); vo.setMid((String)
+	 * session.getAttribute("sMid")); return study2Service.setQrCodeCreate(realPath,
+	 * vo); }
+	 * 
+	 * // QR Code 티켓예매 폼보기
+	 * 
+	 * @GetMapping("/qrCode/qrCodeEx3") public String qrCodeEx3Get() { return
+	 * "study2/qrCode/qrCodeEx3"; }
+	 * 
+	 * // QR Code 티켓예매 생성하기
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/qrCode/qrCodeEx3") public String
+	 * qrCodeEx3Post(HttpServletRequest request, QrCodeVO vo) { String realPath =
+	 * request.getSession().getServletContext().getRealPath(
+	 * "/resources/data/qrCode/"); vo.setFlag(3); return
+	 * study2Service.setQrCodeCreate(realPath, vo); }
+	 * 
+	 * // QR Code 티켓예매 폼보기(DB저장 검색)
+	 * 
+	 * @GetMapping("/qrCode/qrCodeEx4") public String qrCodeEx4Get() { return
+	 * "study2/qrCode/qrCodeEx4"; }
+	 * 
+	 * // QR Code 티켓예매 생성하기(DB저장 검색)
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping("/qrCode/qrCodeEx4") public String
+	 * qrCodeEx4Post(HttpServletRequest request, QrCodeVO vo) { String realPath =
+	 * request.getSession().getServletContext().getRealPath(
+	 * "/resources/data/qrCode/"); vo.setFlag(4); return
+	 * study2Service.setQrCodeCreate(realPath, vo); }
+	 * 
+	 * // QR Code명 검색하기(DB저장 검색)
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value = "/qrCode/qrCodeSearch", method = RequestMethod.POST)
+	 * public QrCodeVO qrCodeSearchPost(String qrCode) { return
+	 * study2Service.getQrCodeSearch(qrCode); }
+	 */
 	// 썸네일 연습 폼보기
 	@RequestMapping(value = "/thumbnail/thumbnailForm", method = RequestMethod.GET)
 	public String thumbnailFormGet() {
@@ -437,7 +489,7 @@ public class Study2Controller {
 	
   // 썸네일 이미지 삭제처리(전체파일삭제)
 	@ResponseBody
-	@RequestMapping(value = "/thumbnail/thumbnailDeleteAll", method = RequestMethod.POST)
+	@PostMapping("/thumbnail/thumbnailDeleteAll")
 	public int thumbnailDeleteAllPost(HttpServletRequest request, String file) {
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/thumbnail/");
 		
@@ -457,30 +509,32 @@ public class Study2Controller {
 	}
 	
   // 결제처리 연습하기 폼..
-  @RequestMapping(value = "/payment/payment", method = RequestMethod.GET)
+  @GetMapping("/payment/payment")
   public String paymentGet() {
   	return "study2/payment/payment";
   }
   
   // 결제처리 연습하기 폼..처리
-  @RequestMapping(value = "/payment/payment", method = RequestMethod.POST)
+  @PostMapping("/payment/payment")
   public String paymentPost(Model model, HttpSession session, DbPayMentVO vo) {
   	session.setAttribute("sPayMentVO", vo);
   	model.addAttribute("vo", vo);
   	return "study2/payment/sample";
   }
-	
+  
   // 결제처리완료후 확인하는 폼...
-  @RequestMapping(value = "/payment/paymentOk", method = RequestMethod.GET)
+  @GetMapping("/payment/paymentOk")
   public String paymentOkGet(Model model, HttpSession session) {
   	DbPayMentVO vo = (DbPayMentVO) session.getAttribute("sPayMentVO");
   	model.addAttribute("vo", vo);
   	session.removeAttribute("sPayMentVO");
   	return "study2/payment/paymentOk";
   }
-	
   
+  // Moment라이브러리 연습폼
+  @GetMapping("/moment/momentForm")
+  public String momentFormGet() {
+  	return "study2/moment/momentForm";
+  }
   
-  
-
 }

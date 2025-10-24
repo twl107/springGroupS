@@ -51,7 +51,7 @@ public class DbShopController {
 	ProjectProvide javaclassProvide;
 	
 	// 대/중/소분류 등록폼/리스트폼 보기
-	@RequestMapping(value = "/dbCategory", method = RequestMethod.GET)
+	@GetMapping("/dbCategory")
 	public String adminMainGet(Model model) {
 		List<DbProductVO> mainVOS = dbShopService.getCategoryMain();			// 대분류 리스트
 		List<DbProductVO> middleVOS = dbShopService.getCategoryMiddle();	// 중분류 리스트
@@ -65,7 +65,7 @@ public class DbShopController {
 	
 	// 대분류 등록하기
 	@ResponseBody
-	@RequestMapping(value = "/categoryMainInput", method = RequestMethod.POST)
+	@PostMapping("/categoryMainInput")
 	public int categoryMainInputPost(DbProductVO vo) {
 		int res = 0;
 		// 현재 기존에 생성된 대분류명이 있는지 체크.....
@@ -78,7 +78,7 @@ public class DbShopController {
 	
 	// 대분류 삭제하기
 	@ResponseBody
-	@RequestMapping(value = "/categoryMainDelete", method = RequestMethod.POST)
+	@PostMapping("/categoryMainDelete")
 	public int categoryMainDeletePost(DbProductVO vo) {
 		int res = 0;
 		// 현재 대분류를 참조하고 있는 중분류가 있는지 체크.....
@@ -91,7 +91,7 @@ public class DbShopController {
 	
 	// 중분류 등록하기
 	@ResponseBody
-	@RequestMapping(value = "/categoryMiddleInput", method = RequestMethod.POST)
+	@PostMapping("/categoryMiddleInput")
 	public int categoryMiddleInputPost(DbProductVO vo) {
 		int res = 0;
 		// 현재 기존에 생성된 중분류명이 있는지 체크.....
@@ -105,7 +105,7 @@ public class DbShopController {
 	
 	// 중분류 삭제하기
 	@ResponseBody
-	@RequestMapping(value = "/categoryMiddleDelete", method = RequestMethod.POST)
+	@PostMapping("/categoryMiddleDelete")
 	public int categoryMiddleDeletePost(DbProductVO vo) {
 		System.out.println("::::vo : " + vo);
 		int res = 0;
@@ -120,14 +120,14 @@ public class DbShopController {
 	
 	// 대분류 선택하면 중분류항목 가져오기
 	@ResponseBody
-	@RequestMapping(value = "/categoryMiddleName", method = RequestMethod.POST)
+	@PostMapping("/categoryMiddleName")
 	public List<DbProductVO> categoryMiddleNamePost(String categoryMainCode) {
 		return dbShopService.getCategoryMiddleName(categoryMainCode);
 	}
 	
 	// 소분류 등록하기
 	@ResponseBody
-	@RequestMapping(value = "/categorySubInput", method = RequestMethod.POST)
+	@PostMapping("/categorySubInput")
 	public int categorySubInputPost(DbProductVO vo) {
 		int res = 0;
 		// 현재 기존에 생성된 소분류명이 있는지 체크.....
@@ -140,7 +140,7 @@ public class DbShopController {
 	
 	// 소분류 삭제하기
 	@ResponseBody
-	@RequestMapping(value = "/categorySubDelete", method=RequestMethod.POST)
+	@PostMapping("/categorySubDelete")
 	public int categorySubDeletePost(DbProductVO vo) {
 		int res = 0;
 		// 소분류 하위항목(상품명)이 있는지 체크...
@@ -153,7 +153,7 @@ public class DbShopController {
 	
 	// 상품 등록시, 중분류 선택시에 소분류항목명을 가져오기
 	@ResponseBody
-	@RequestMapping(value = "/categorySubName", method = RequestMethod.POST)
+	@PostMapping("/categorySubName")
 	public List<DbProductVO> categorySubNamePost(String categoryMainCode, String categoryMiddleCode) {
 		return dbShopService.getCategorySubName(categoryMainCode, categoryMiddleCode);
 	}
@@ -167,7 +167,7 @@ public class DbShopController {
 	}
 	
 	// 상품 등록 처리하기
-	@RequestMapping(value = "/dbProduct", method=RequestMethod.POST)
+	@PostMapping("/dbProduct")
 	public String dbProductPost(MultipartFile file, HttpServletRequest request, DbProductVO vo) {
 		// main이미지 저장후, content(ckeditor)에 이미지파일 업로드시에 ckeditor폴더에서 'dbShop/product'폴더로 복사처리...후~ 처리된 내용을 DB에 저장하기
 		int res = dbShopService.mainImgToSubImgSave(file, vo);
@@ -177,14 +177,15 @@ public class DbShopController {
 	}
 	
   // 등록된 모든 상품 리스트 보기(관리자화면에서...)
-	@RequestMapping(value = "/dbShopList", method = RequestMethod.GET)
+	@GetMapping("/dbShopList")
 	public String dbShopListGet(Model model,
 			@RequestParam(name="part", defaultValue = "전체", required = false) String part,
-			@RequestParam(name="mainPrice", defaultValue = "0", required = false) int mainPrice){
+			@RequestParam(name="mainPrice", defaultValue = "0", required = false) String mainPrice
+		){
 		List<DbProductVO> subTitleVOS = dbShopService.getSubTitle();	// 소분류명을 가져온다.
 		model.addAttribute("subTitleVOS", subTitleVOS);
 		model.addAttribute("part", part);
-
+		
 		List<DbProductVO> productVOS = dbShopService.getDbShopList(part, mainPrice);	// 전체 상품리스트 가져오기
 		model.addAttribute("productVOS", productVOS);
 		
@@ -192,7 +193,7 @@ public class DbShopController {
 	}
 	
 	// 관리자화면에서 진열된 상품을 클릭하였을경우에 해당 상품의 상세내역 보여주기
-	@RequestMapping(value = "/dbShopContent", method = RequestMethod.GET)
+	@GetMapping("/dbShopContent")
 	public String dbShopContentGet(Model model, int idx) {
 		DbProductVO productVO = dbShopService.getDbShopProduct(idx);			// 상품 1건의 정보를 불러온다.
 		List<DbOptionVO> optionVOS = dbShopService.getDbShopOption(idx);	// 해당 상품의 모든 옵션 정보를 가져온다.
@@ -204,7 +205,7 @@ public class DbShopController {
 	}
 	
 	// 옵션 등록창 보여주기
-	@RequestMapping(value = "/dbOption", method = RequestMethod.GET)
+	@GetMapping("/dbOption")
 	public String dbOptionGet(Model model,
 			@RequestParam(name="productName", defaultValue = "", required=false) String productName
 		) {
@@ -222,27 +223,27 @@ public class DbShopController {
 	
 	// 소분류 선택시에 해당 상품명(모델명)을 가져오기
 	@ResponseBody
-	@RequestMapping(value = "/categoryProductName", method = RequestMethod.POST)
+	@PostMapping("/categoryProductName")
 	public List<DbProductVO> categoryProductNameGet(String categoryMainCode, String categoryMiddleCode, String categorySubCode) {
 		return dbShopService.getCategoryProductNameAjax(categoryMainCode, categoryMiddleCode, categorySubCode);
 	}
 	
 	// 옵셥보기에서 상품선택 콤보상자에서 상품을 선택시 해당 상품의 정보를 보여준다.
 	@ResponseBody
-	@RequestMapping(value = "/getProductInfor", method = RequestMethod.POST)
+	@PostMapping("/getProductInfor")
 	public DbProductVO getProductInforGet(String productName) {
 		return dbShopService.getProductInfor(productName);
 	}
 	
 	// 옵셥보기에서 '옵션보기'버튼 클릭시 해당 상품의 옵션리스트를 보여준다.
 	@ResponseBody
-	@RequestMapping(value = "/getOptionList", method = RequestMethod.POST)
+	@PostMapping("/getOptionList")
 	public List<DbOptionVO> getOptionListPost(int productIdx) {
 		return dbShopService.getOptionList(productIdx);
 	}
 	
 	// 옵션에 기록한 내용들을 등록처리하기
-	@RequestMapping(value = "/dbOption", method = RequestMethod.POST)
+	@PostMapping("/dbOption")
 	public String dbOptionPost(Model model, DbOptionVO vo, String[] optionName, int[] optionPrice) {
 		int res = 0;
 		for(int i=0; i<optionName.length; i++) {
@@ -263,9 +264,49 @@ public class DbShopController {
 	
 	// 옵션 등록창에서 옵션리스트를 확인후 필요없는 옵션항목을 삭제처리..
 	@ResponseBody
-	@RequestMapping(value="/optionDelete", method = RequestMethod.POST)
+	@PostMapping("/optionDelete")
 	public int optionDeletePost(int idx) {
 		return dbShopService.setOptionDelete(idx);
+	}
+	
+  // 관리자에서 관리자가 주문 확인하기
+	@GetMapping("/adminOrderStatus")
+	public String dbOrderProcessGet(Model model, PageVO pageVO,
+	    @RequestParam(name="startJumun", defaultValue="", required=false) String startJumun,
+	    @RequestParam(name="endJumun", defaultValue="", required=false) String endJumun,
+	    @RequestParam(name="orderStatus", defaultValue="전체", required=false) String orderStatus
+    ) {
+		String strNow = "";
+		if(startJumun.equals("")) {
+			Date now = new Date();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    strNow = sdf.format(now);
+	    
+	    startJumun = strNow;
+	    endJumun = strNow;
+		}
+    
+    String strOrderStatus = startJumun + "@" + endJumun + "@" + orderStatus;
+    pageVO.setSection("adminDbOrderProcess");
+    pageVO.setSearchString(strOrderStatus);
+    pageVO = pagination.pagination(pageVO);
+    
+    List<DbBaesongVO> vos = dbShopService.getAdminOrderStatus(pageVO.getStartIndexNo(), pageVO.getPageSize(), startJumun, endJumun, orderStatus);
+	
+	  model.addAttribute("startJumun", startJumun);
+	  model.addAttribute("endJumun", endJumun);
+	  model.addAttribute("orderStatus", orderStatus);
+	  model.addAttribute("vos", vos);
+	  model.addAttribute("pageVO", pageVO);
+	
+	  return "admin/dbShop/dbOrderProcess";
+	}
+	
+	// 주문관리에서, 관리자가 주문상태를 변경처리하는것
+	@ResponseBody
+	@PostMapping("/goodsStatus")
+	public int goodsStatusGet(String orderIdx, String orderStatus) {
+		return dbShopService.setOrderStatusUpdate(orderIdx, orderStatus);
 	}
 	
 	
@@ -282,7 +323,7 @@ public class DbShopController {
 		List<DbProductVO> subTitleVOS = dbShopService.getSubTitle();	// 소분류명을 가져온다.
 		model.addAttribute("subTitleVOS", subTitleVOS);
 		model.addAttribute("part", part);
-
+		
 		List<DbProductVO> productVOS = dbShopService.getDbShopList(part, mainPrice);	// 전체 상품리스트 가져오기
 		model.addAttribute("productVOS", productVOS);
 		model.addAttribute("price", mainPrice);
@@ -466,7 +507,7 @@ public class DbShopController {
 		
 		return "redirect:/message/paymentResultOk";
 	}
-
+	
 	// 결재완료되고난후 주문/배송 테이블에 처리가 끝난 주문상품에 대한 결제정보 보여주기
 	@SuppressWarnings({ "unchecked" })
 	@RequestMapping(value="/paymentResultOk", method=RequestMethod.GET)
@@ -482,7 +523,7 @@ public class DbShopController {
 		
 		return "dbShop/paymentResult";
 	}
-	
+
 	// 배송지 정보 보여주기
 	@RequestMapping(value="/dbOrderBaesong", method=RequestMethod.GET)
 	public String dbOrderBaesongGet(String orderIdx, Model model) {
@@ -499,9 +540,12 @@ public class DbShopController {
 		return "dbShop/dbOrderBaesong";
 	}
 	
-	// 나의 주문 내역 보기(원래는 현재 주문한 주문건에 대한 내용만 보여주도록 처리하고, 메뉴의 '주문내역보기'에서는 모든 자료(날짜별/상태별)를 볼 수 있게 처리
+	// 나의 주문 내역 보기(원래는 현재 주문한 주문건에 대한 내용만 보여주도록 처리하고, 메뉴의 '주문내역보기'에서는 모든 자료(날짜별/상태별)를 볼수있게 처리
 	@GetMapping("/dbMyOrder")
-	public String dbMyOrderGet(Model model, HttpServletRequest request, HttpSession session,PageVO pageVO) {
+	public String dbMyOrderGet(Model model, HttpServletRequest request, HttpSession session,PageVO pageVO,
+			String startJumun, String endJumun,
+			@RequestParam(name="conditionOrderStatus", defaultValue="전체", required=false) String conditionOrderStatus
+		) {
 		String mid = (String) session.getAttribute("sMid");
 		int level = (int) session.getAttribute("sLevel");
 		if(level == 0) mid = "전체";
@@ -510,16 +554,41 @@ public class DbShopController {
 		pageVO.setPart(mid);
 		pageVO = pagination.pagination(pageVO);
 		
+  	// 오늘 구매한 내역을 초기화면에 보여준다.
 		List<DbBaesongVO> vos = dbShopService.getMyOrderList(pageVO.getStartIndexNo(), pageVO.getPageSize(), mid);
 		
 		model.addAttribute("vos", vos);				
 		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("startJumun", startJumun);
+		model.addAttribute("endJumun", endJumun);
+		model.addAttribute("conditionOrderStatus", conditionOrderStatus);
 		
 		return "dbShop/dbMyOrder";
 	}
 	
-	
-	
-	
+	// 현재 주문 상태 보여주기
+	@RequestMapping(value="/dbMyOrderStatus", method=RequestMethod.GET)
+	public String myOrderStatusGet(Model model, HttpServletRequest request, HttpSession session, PageVO pageVO,
+			String startJumun, String endJumun, 
+			@RequestParam(name="conditionOrderStatus", defaultValue="전체", required=false) String conditionOrderStatus) {
+		String mid = (String) session.getAttribute("sMid");
+		int level = (int) session.getAttribute("sLevel");
+		
+		if(level == 0) mid = "전체";
+		String searchString = startJumun + "@" + endJumun + "@" + conditionOrderStatus;
+		pageVO.setSearchStr(searchString);
+		pageVO.setSection("myOrderStatus");
+		pageVO.setPart(mid);
+		pageVO = pagination.pagination(pageVO);
+		
+		List<DbBaesongVO> vos = dbShopService.getMyOrderStatus(pageVO.getStartIndexNo(), pageVO.getPageSize(), mid, startJumun, endJumun, conditionOrderStatus);
+		model.addAttribute("vos", vos);				
+		model.addAttribute("startJumun", startJumun);
+		model.addAttribute("endJumun", endJumun);
+		model.addAttribute("conditionOrderStatus", conditionOrderStatus);
+		model.addAttribute("pageVO", pageVO);
+		
+		return "dbShop/dbMyOrder";
+	}
 	
 }

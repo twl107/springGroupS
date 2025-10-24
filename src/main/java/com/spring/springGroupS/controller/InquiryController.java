@@ -61,6 +61,7 @@ public class InquiryController {
 		
 		return "redirect:/message/inquiryInputOk";
 	}
+	
 	@GetMapping("/inquiryView")
 	public String inquiryViewGet(Model model, int idx,
 			@RequestParam(name="pag", defaultValue="1", required=false) int pag

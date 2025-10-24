@@ -18,7 +18,7 @@
 		select * from schedule where part = '공지' order by sDate;
 	</select>
 	
-	  <select id="getInquiryListAdmin" resultType="com.spring.springGroupS.vo.InquiryVO">
+  <select id="getInquiryListAdmin" resultType="com.spring.springGroupS.vo.InquiryVO">
     select * from inquiry <if test="part != '전체'"> where reply = #{part} </if> order by idx desc limit #{startIndexNo},#{pageSize};
   </select>
   
@@ -37,6 +37,7 @@
 	
 	
 	
+	
 	<insert id="setBoardComplaintInput">
 	  insert into complaint values (default,#{vo.part},#{vo.partIdx},#{vo.cpMid},#{vo.cpContent},default,default);
 	</insert>
@@ -48,8 +49,8 @@
   <insert id="setInquiryInputAdmin">
     insert into inquiryReply values (default,#{vo.inquiryIdx},default,#{vo.reContent});
   </insert>
-  
-  
+	
+	
 	
 	
 	<update id="setMemberLevelChange">
@@ -85,7 +86,7 @@
   </update>
   
   
-  
+
   <delete id="setAdInquiryReplyDelete">
     delete from inquiryReply where reIdx = #{reIdx};
   </delete>
@@ -93,10 +94,6 @@
   <delete id="setAdInquiryDelete">
     delete from inquiryReply where reIdx = #{reIdx};
     delete from inquiry where idx = #{idx};
-  </delete>
-  
-  
-  
-  
+  </delete>	
 
 </mapper>
