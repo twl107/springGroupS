@@ -294,11 +294,30 @@
 		</dependency>
 		
 		
+		<!-- crawling을 위한 라이브러리(jsoup, selenium -->
+		<dependency>
+	    <groupId>org.jsoup</groupId>
+	    <artifactId>jsoup</artifactId>
+	    <version>1.17.2</version>
+		</dependency>
 		
+		<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-java</artifactId>
+	    <version>4.26.0</version>
+		</dependency>
 		
-		
-		
-		
+		<dependency>
+	    <groupId>io.github.bonigarcia</groupId>
+	    <artifactId>webdrivermanager</artifactId>
+	    <version>5.9.2</version>
+		</dependency>
+		<dependency>  
+	    <groupId>edu.stanford.nlp</groupId>
+	    <artifactId>stanford-corenlp</artifactId>
+	    <version>4.4.0</version>
+	    <classifier>models</classifier>
+		</dependency>
 		
 		
 		

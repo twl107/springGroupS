@@ -69,6 +69,7 @@
 		        <a href="${ctp}/study2/thumbnail/thumbnailForm" class="w3-bar-item w3-button">썸네일연습</a>
 		        <a href="${ctp}/study2/moment/momentForm" class="w3-bar-item w3-button">Moment라이브러리연습</a>
 		        <a href="${ctp}/error/errorForm" class="w3-bar-item w3-button">errorPage연습</a>
+		        <a href="${ctp}/study2/crawling/jsoup" class="w3-bar-item w3-button">클롤링 연습</a>
 		      </div>
 		    </div>
 		    <div class="w3-dropdown-hover w3-hide-small">

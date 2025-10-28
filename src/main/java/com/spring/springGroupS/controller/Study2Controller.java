@@ -1,6 +1,8 @@
 package com.spring.springGroupS.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springGroupS.service.Study2Service;
 import com.spring.springGroupS.vo.ChartVO;
+import com.spring.springGroupS.vo.CrawlingVO;
 import com.spring.springGroupS.vo.CrimeVO;
 import com.spring.springGroupS.vo.DbPayMentVO;
 import com.spring.springGroupS.vo.KakaoAddressVO;
@@ -536,5 +544,94 @@ public class Study2Controller {
   public String momentFormGet() {
   	return "study2/moment/momentForm";
   }
+  
+  // 크롤링(crawling) 연습폼 보기
+  @GetMapping("/crawling/jsoup")
+  public String jsoupGet() {
+  	return "study2/crawling/jsoup";
+  }
+  
+  // jsoup을 이용한 크롤링
+  @ResponseBody
+  @PostMapping("/crawling/jsoup")
+  public ArrayList<String> jsoupPost(String url, String selector) throws IOException {
+  	Connection conn = Jsoup.connect(url);
+  	
+  	Document document = conn.get();
+  	//System.out.println("document : " + document);
+  	
+  	Elements selects = document.select(selector);
+  	System.out.println("selects : " + selects);
+  	System.out.println(selects.text());
+  	
+  	ArrayList<String> vos = new ArrayList<String>();
+  	int i = 0;
+  	for(Element select : selects) {
+  		i++;
+  		System.out.println(i + " : " + select.text());
+  		//vos.add(i + " : " + select);
+  		vos.add(i + " : " + select.html().replace("data-",""));
+  	}
+  	
+  	return vos;
+  }
+  
+  // jsoup을 이용한 크롤링
+  @ResponseBody
+  @PostMapping("/crawling/jsoup2")
+  public ArrayList<CrawlingVO> jsoup2Post() throws IOException {
+  	Connection conn = Jsoup.connect("https://news.naver.com/");
+  	
+  	Document document = conn.get();
+  	
+  	Elements selects = document.select("strong.cnf_news_title");
+  	
+  	ArrayList<String> titleVos = new ArrayList<String>();
+  	for(Element select : selects) {
+  		titleVos.add(select.html());
+  	}
+  	
+  	ArrayList<String> imageVos = new ArrayList<String>();
+  	selects = document.select("div.cnf_news_thumb");
+  	for(Element select : selects) {
+  		imageVos.add(select.html().replace("data-",""));
+  	}
+  	
+  	ArrayList<String> journalVos = new ArrayList<String>();
+  	selects = document.select("em.cnf_journal_name");
+  	for(Element select : selects) {
+  		journalVos.add(select.html());
+  	}
+  	
+  	
+  	ArrayList<CrawlingVO> vos = new ArrayList<CrawlingVO>();
+  	CrawlingVO vo = null;
+  	for(int i=0; i<imageVos.size(); i++) {
+  		vo = new CrawlingVO();
+  		vo.setItem1(titleVos.get(i));
+  		vo.setItem2(imageVos.get(i));
+  		vo.setItem3(journalVos.get(i));
+  		System.out.println("vo : " + vo);
+  		vos.add(vo);
+  	}
+  	
+  	return vos;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 }
