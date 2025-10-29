@@ -48,7 +48,7 @@ public interface Study2Service {
 
 	int setKakaoAddressDelete(String address);
 
-	// String setQrCodeCreate(String realPath, QrCodeVO vo);
+	String setQrCodeCreate(String realPath, QrCodeVO vo);
 
 	QrCodeVO getQrCodeSearch(String qrCode);
 

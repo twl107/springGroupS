@@ -46,7 +46,7 @@ public interface Study2DAO {
 
 	int setKakaoAddressDelete(@Param("address") String address);
 
-	// void setQrCodeCreate(@Param("vo") QrCodeVO vo);
+	void setQrCodeCreate(@Param("vo") QrCodeVO vo);
 
 	QrCodeVO getQrCodeSearch(@Param("qrCode") String qrCode);
 

@@ -265,6 +265,15 @@
 		    <version>${org.springframework-version}</version>
 		</dependency>
 		
+		<!-- QR Code 생성을 위한 구글 라이브러리(zxing) -->
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/javase -->
+		<dependency>
+	    <groupId>com.google.zxing</groupId>
+	    <artifactId>javase</artifactId>
+	    <version>3.5.1</version>
+		</dependency>
+		
+		
 		<!-- 썸네일 이미지를 위한 라이브러리(thumbnailator) -->
 		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
 		<dependency>
