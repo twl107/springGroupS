@@ -3,6 +3,11 @@
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=twl107)](https://github.com/anuraghazra/github-readme-stats)
 
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=twl107)](https://github.com/anuraghazra/github-readme-stats)
+
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=twl107&hide=contribs,prs&show_icons=true&theme=graywhite)
+
+![js](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
 <b><a href="https://github.com/twl107/springGroupS/blob/master/src/main/java/com/spring/springGroupS/controller/BoardController.java" target="_blank">게시판컨트롤러소스</a></b>
 
 
