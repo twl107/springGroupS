@@ -1,7 +1,7 @@
 <!-- 이미지 넣기 -->
 ![웹개발](http://49.142.157.251:9090/springGroupS10/data/notice/251217110437_spring1.png).
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=깃허브 아이디)](https://github.com/anuraghazra/github-readme-stats)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=twl107)](https://github.com/anuraghazra/github-readme-stats)
 
 <b><a href="https://github.com/twl107/springGroupS/blob/master/src/main/java/com/spring/springGroupS/controller/BoardController.java" target="_blank">게시판컨트롤러소스</a></b>
 
